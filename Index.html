@@ -14,7 +14,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Roboto, sans-serif;
         }
         body, html {
-            width: 100%; height: 100%;
+            width: 100vw; height: 100vh;
             overflow: hidden; background-color: #000000; color: #ffffff;
         }
         
@@ -22,8 +22,7 @@
             width: 100%; height: 100%; position: relative;
             background-image: linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%);
             background-size: cover; background-position: center;
-            /* Diubah dari 50px menjadi 25px di bagian kanan agar elemen lebih mempet ke kanan layar */
-            display: flex; padding: 28px 25px 28px 50px; transition: background 0.5s ease;
+            display: flex; padding: 25px 25px 25px 40px; transition: background 0.5s ease;
         }
         
         .launcher-container::before {
@@ -31,41 +30,6 @@
             background: linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.018) 50%, transparent 52%);
             background-size: 28px 28px; pointer-events: none; z-index: 1;
         }
-
-        /* REAL-TIME STATUS HUD - MEPET ATAS ALA PC FPS & MONOKROM */
-        .hud-status-bar {
-            position: absolute;
-            top: 0;
-            right: 25px; /* Disesuaikan agar sejajar dengan elemen kanan */
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 4px 14px;
-            border-radius: 0 0 8px 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: none;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 10;
-        }
-        .hud-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 700;
-            font-family: monospace, sans-serif;
-            color: #d1d1d6;
-        }
-        .hud-item svg {
-            width: 12px;
-            height: 12px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2.5;
-        }
-        .hud-fps, .hud-temp, .hud-cpu { color: #d1d1d6; }
 
         .sidebar-left { width: 34%; height: 100%; display: flex; flex-direction: column; z-index: 2; }
         
@@ -420,33 +384,6 @@
 
     <div class="launcher-container" id="bgContainer">
         
-        <div class="hud-status-bar">
-            <div class="hud-item" id="hudBattery">
-                <svg viewBox="0 0 24 24"><path d="M16 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2zM22 10v4" stroke-linecap="round"/></svg>
-                <span id="valBattery">--%</span>
-            </div>
-            <div class="hud-item">
-                <svg viewBox="0 0 24 24"><path d="M6 19h12M6 5h12M9 9h6M9 14h6" stroke-linecap="round"/></svg>
-                <span id="valRam">--%</span>
-            </div>
-            <div class="hud-item hud-cpu">
-                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" stroke-linecap="round"/></svg>
-                <span id="valCpu">--%</span>
-            </div>
-            <div class="hud-item hud-temp">
-                <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" stroke-linecap="round"/></svg>
-                <span id="valTemp">--°C</span>
-            </div>
-            <div class="hud-item hud-fps">
-                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                <span id="valFps">-- FPS</span>
-            </div>
-            <div class="hud-item" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 10px;">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span id="valTime">00:00</span>
-            </div>
-        </div>
-
         <div class="sidebar-left">
             <div class="header-brand">
                 <div class="brand-logo-wrapper">
@@ -535,21 +472,11 @@
             <div class="ios-group">
                 <div class="feature-row">
                     <div class="feature-info">
-                        <span class="feature-title">Nama Mode fokus</span>
-                        <span class="feature-desc">Otomatis hidupkan mode hening, jangan ganggu, hemat baterai.</span>
+                        <span class="feature-title">Gaming Mode</span>
+                        <span class="feature-desc">Ubah resolusi layar dan density agar performa gaming jauh lebih lancar dan aman.</span>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="switchFocusMode" onchange="handleFocusModeFeature(this.checked)">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="feature-row">
-                    <div class="feature-info">
-                        <span class="feature-title">Mode Game Ultra</span>
-                        <span class="feature-desc">Fokuskan core CPU/GPU tingkat tinggi khusus untuk merender engine game.</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="switchGameMode" onchange="handleFeatureToggle(101, this.checked)">
+                        <input type="checkbox" id="switchGamingMode" onchange="handleGamingModeToggle(this.checked)">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -665,34 +592,6 @@
             }
         }
 
-        function updateRealTimeHUD() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('valTime').innerText = `${hours}:${minutes}`;
-
-            const randomCpu = Math.floor(Math.random() * (48 - 12 + 1)) + 12;
-            const randomRam = Math.floor(Math.random() * (72 - 60 + 1)) + 60;
-            const randomTemp = Math.floor(Math.random() * (43 - 36 + 1)) + 36;
-            const randomFps = Math.floor(Math.random() * (61 - 58 + 1)) + 58;
-
-            document.getElementById('valCpu').innerText = randomCpu + "%";
-            document.getElementById('valRam').innerText = randomRam + "%";
-            document.getElementById('valTemp').innerText = randomTemp + "°C";
-            document.getElementById('valFps').innerText = randomFps + " FPS";
-
-            if (navigator.getBattery) {
-                navigator.getBattery().then(function(battery) {
-                    document.getElementById('valBattery').innerText = Math.floor(battery.level * 100) + "%";
-                });
-            } else {
-                document.getElementById('valBattery').innerText = "85%";
-            }
-        }
-        
-        setInterval(updateRealTimeHUD, 1500);
-        updateRealTimeHUD();
-
         function getSmartIcon(appName, pkgName) {
             const name = appName.toLowerCase();
             const pkg = pkgName.toLowerCase();
@@ -786,17 +685,28 @@
             }
         }
 
-        /* LOGIK ANIMASI DAN TRIGER MODE FOKUS */
-        function handleFocusModeFeature(isChecked) {
-            if (isChecked) {
-                runRogAnimation("FOCUS MODE ENGAGED", () => {
-                    /* DIPERBAIKI: Mengirimkan ID 100 agar sinkron dengan perintah Shizuku DND/Hening/Baterai di Java */
-                    handleFeatureToggle(100, true); 
-                    showToast("Mode Hening, Jangan Ganggu & Hemat Baterai Aktif!");
-                });
+        function handleGamingModeToggle(isChecked) {
+            if (window.AndroidBridge && typeof window.AndroidBridge.executeShellCommand === "function") {
+                if (isChecked) {
+                    runRogAnimation("GAMING MODE TUNING", () => {
+                        const cmd = "MAIN_SIZE=$(wm size | awk '{print $NF}'); WIDTH=$(echo $MAIN_SIZE | cut -d'x' -f1); HEIGHT=$(echo $MAIN_SIZE | cut -d'x' -f2); ASPECT_RATIO=$((HEIGHT * 100 / WIDTH)); NEW_WIDTH=$((820 * WIDTH / 360)); NEW_HEIGHT=$((NEW_WIDTH * ASPECT_RATIO / 100)); wm size ${NEW_WIDTH}x${NEW_HEIGHT}; wm density 820; echo 'Gaming Mode 820 Universal Aktif! Aman di semua HP.'";
+                        window.AndroidBridge.executeShellCommand(cmd);
+                        showToast("Gaming Mode 820 Aktif!");
+                    });
+                } else {
+                    const cmd = "wm size reset; wm density reset; echo 'Layar kembali normal ke bawaan pabrik!'";
+                    window.AndroidBridge.executeShellCommand(cmd);
+                    showToast("Layar kembali normal!");
+                }
             } else {
-                handleFeatureToggle(100, false);
-                showToast("Nama Mode fokus Dinonaktifkan");
+                // Simulasi interface lokal jika di luar webview android
+                if (isChecked) {
+                    runRogAnimation("GAMING MODE TUNING", () => {
+                        showToast("Simulasi: Gaming Mode 820 Universal Aktif!");
+                    });
+                } else {
+                    showToast("Simulasi: Layar kembali normal!");
+                }
             }
         }
 
@@ -1003,9 +913,11 @@
 
         function showToast(msg) {
             const toast = document.getElementById('toastBox');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2200);
+            if (toast) {
+                toast.innerText = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2200);
+            }
         }
     </script>
 </body>
