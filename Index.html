@@ -74,10 +74,12 @@
             display: flex; align-items: center; gap: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .game-item img { 
+        .game-item img, .game-item .fallback-icon { 
             width: 38px; height: 38px; border-radius: 10px; object-fit: cover; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.35); 
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
+        .game-item .fallback-icon { background: #2c2c2e; }
         .game-item:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: translateY(-1px);
@@ -94,60 +96,53 @@
             box-shadow: 0 10px 28px rgba(255, 59, 48, 0.2);
         }
 
-        /* PERUBAHAN: Tata letak dirapikan, komponen tidak lagi menumpuk di tengah */
         .main-panel-right { 
-            width: 66%; height: 100%; display: flex; flex-direction: column; 
-            justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; 
+            width: 66%; height: 100%; position: relative; z-index: 2; 
             padding-left: 40px;
         }
         
         .action-button-group { 
+            position: absolute;
+            bottom: 68px; 
+            right: 0;
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 10px; 
             width: auto; 
-            align-items: flex-start;
-            margin-top: 10px;
+            align-items: flex-end; 
         }
 
         .active-game-title { 
-            font-size: 36px; 
+            font-size: 32px; 
             font-weight: 800; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
             color: #ffffff; 
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.8);
         }
         
-        .btn {
-            padding: 17px 34px; border-radius: 16px; font-size: 15.5px;
-            font-weight: 700; cursor: pointer; border: none; display: flex;
-            align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-        }
-        .btn:active { 
-            transform: scale(0.95); 
-            transition: transform 0.08s ease;
-        }
-        
-        /* Gaya tombol start game bernuansa ROG Turbo */
         .btn-start-game { 
             background: linear-gradient(90deg, #ff3b30 0%, #ff2d55 100%);
             color: #ffffff; 
             font-weight: 800; 
-            min-width: 240px;
-            padding: 16px 40px;
-            font-size: 16px;
+            min-width: 220px;
+            padding: 12px 32px;
+            font-size: 15px;
             letter-spacing: 2px;
             text-transform: uppercase;
             border-radius: 4px;
-            clip-path: polygon(0 0, 90% 0, 100% 35%, 100% 100%, 10% 100%, 0 65%);
+            clip-path: polygon(0 0, 92% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
             border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
             box-shadow: 0 0 20px rgba(255, 59, 48, 0.4);
         }
         .btn-start-game:hover { 
             background: linear-gradient(90deg, #ff453a 0%, #ff375f 100%);
             box-shadow: 0 0 30px rgba(255, 59, 48, 0.7);
+        }
+        .btn-start-game:active {
+            transform: scale(0.96);
         }
         
         .utility-box { 
@@ -172,7 +167,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
         .btn-icon:hover {
-            background: rgba(255, 3d, 55, 0.15);
+            background: rgba(255, 59, 48, 0.15);
             border-color: rgba(255, 59, 48, 0.4);
             transform: translateY(-2px);
             box-shadow: 0 8px 18px rgba(255, 59, 48, 0.2);
@@ -185,7 +180,6 @@
             display: none;
         }
 
-        /* Dropdown Profil */
         .profile-dropdown {
             position: absolute;
             bottom: 58px;
@@ -268,18 +262,23 @@
         }
         .search-input {
             width: 100%;
-            padding: 10px 16px 10px 38px;
+            padding: 12px 16px 12px 40px;
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 14.5px;
             outline: none;
             transition: all 0.2s ease;
         }
         .search-input:focus {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 59, 48, 0.4);
+            background: rgba(255, 255, 255, 0.14);
+            border-color: #ff3b30;
+            box-shadow: 0 0 10px rgba(255, 59, 48, 0.2);
+        }
+        .search-icon-svg {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: rgba(255,255,255,0.4); pointer-events: none;
         }
 
         .section-header { 
@@ -338,7 +337,6 @@
         }
         .toast-notify.show { transform: translateX(-50%) translateY(0); }
 
-        /* PERUBAHAN: Desain Overlay Animasi Full-Gaming ROG TURBO MODE */
         .cache-anim-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 5, 8, 0.95); z-index: 999;
@@ -352,8 +350,6 @@
             position: relative; width: 180px; height: 180px;
             display: flex; align-items: center; justify-content: center;
         }
-        
-        /* Efek Lingkaran Radar Utama */
         .rog-radar-ring {
             position: absolute; width: 100%; height: 100%;
             border: 2px dashed rgba(255, 59, 48, 0.2);
@@ -367,8 +363,6 @@
             border-radius: 50%;
             animation: rogSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
-        
-        /* Angka Persentase di Tengah */
         .rog-counter-box {
             font-size: 38px; font-weight: 900; color: #ffffff;
             font-family: monospace, sans-serif; text-shadow: 0 0 15px rgba(255, 59, 48, 0.8);
@@ -385,11 +379,11 @@
         @keyframes rogPulseText { 0% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
-<body>
+<body onclick="playClickSound()">
 
     <div class="launcher-container" id="bgContainer">
         <div class="sidebar-left">
-            <div class="header-brand">
+            <div class="header-brand" onclick="playClickSound()">
                 <div class="brand-logo-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 2Z" fill="url(#shieldGrad)" stroke="#ffffff" stroke-width="1" />
@@ -405,20 +399,20 @@
                 <span class="brand-title">ROG LAUNCHER</span>
             </div>
             <div class="game-list-scroll" id="gameListWrapper">
-                <div style="color:#8e8e93; padding:20px; font-size:14px;" id="emptyStateText">Belum ada game. Tambahkan lewat tombol + di kanan bawah.</div>
+                <div style="color:#8e8e93; padding:20px; font-size:14px;" id="emptyStateText">Belum ada aplikasi. Tambahkan lewat tombol + di kanan bawah.</div>
             </div>
         </div>
 
         <div class="main-panel-right">
             <div class="action-button-group">
-                <h1 class="active-game-title" id="txtCurrentGame">Pilih Game</h1>
-                <button class="btn btn-start-game" onclick="actionStartGame()">
-                    <span>Start Game</span>
+                <h1 class="active-game-title" id="txtCurrentGame">Pilih Aplikasi</h1>
+                <button class="btn-start-game" onclick="actionStartGame(); event.stopPropagation();">
+                    Start Game
                 </button>
             </div>
 
             <div class="utility-box" id="utilityBox">
-                <button class="btn-icon btn-menu-game" id="btnMenuGame" onclick="openGameMenuSheet()" title="Menu Game">
+                <button class="btn-icon btn-menu-game" id="btnMenuGame" onclick="openGameMenuSheet(); event.stopPropagation();" title="Menu Game">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="6" y1="12" x2="10" y2="12"></line>
                         <line x1="8" y1="10" x2="8" y2="14"></line>
@@ -428,14 +422,14 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="triggerAddApps()" title="Tambah Permainan">
+                <button class="btn-icon" onclick="triggerAddApps(); event.stopPropagation();" title="Tambah Permainan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="triggerBackgroundPicker()" title="Ganti Background">
+                <button class="btn-icon" onclick="triggerBackgroundPicker(); event.stopPropagation();" title="Ganti Background">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -443,14 +437,14 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="openIosSheetMenu()" title="Mod Menu / Floating Overlay">
+                <button class="btn-icon" onclick="openIosSheetMenu(); event.stopPropagation();" title="Performance Tuner">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="14" height="14" rx="2"/>
                         <rect x="7" y="7" width="14" height="14" rx="2"/>
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="toggleProfileMenu()" title="Profil">
+                <button class="btn-icon" onclick="toggleProfileMenu(); event.stopPropagation();" title="Profil">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                         <circle cx="12" cy="7" r="4"/>
@@ -471,7 +465,6 @@
     <div class="ios-bottom-sheet" id="gameMenuSheet">
         <div class="sheet-handle" onclick="closeGameMenuSheet()"></div>
         <div class="sheet-title">Menu Game Booster Pro</div>
-        
         <div class="sheet-scroll-content">
             <div class="section-header">Sistem Kontrol Kinerja</div>
             <div class="ios-group">
@@ -481,29 +474,27 @@
                         <span class="feature-desc">Fokuskan core CPU/GPU tingkat tinggi khusus untuk merender engine game.</span>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="switchGameMode" onchange="toggleGameModeFeature(this.checked)">
+                        <input type="checkbox" id="switchGameMode" onchange="handleFeatureToggle(101, this.checked)">
                         <span class="slider"></span>
                     </label>
                 </div>
-
                 <div class="feature-row">
                     <div class="feature-info">
                         <span class="feature-title">Hapus Cache Sistem</span>
                         <span class="feature-desc">Bersihkan sampah memori berkas temporary seluruh aplikasi secara real-time.</span>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="switchCache" onchange="toggleCacheFeature(this.checked)">
+                        <input type="checkbox" id="switchCache" onchange="handleCacheFeature(this.checked)">
                         <span class="slider"></span>
                     </label>
                 </div>
-
                 <div class="feature-row">
                     <div class="feature-info">
                         <span class="feature-title">Tingkatkan Kecepatan RAM</span>
-                        <span class="feature-desc">Bariskan dan bekukan alokasi memori semua aplikasi background, kecuali game yang berjalan.</span>
+                        <span class="feature-desc">Bariskan dan bekukan alokasi memori semua aplikasi background.</span>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="switchSpeed" onchange="toggleSpeedFeature(this.checked)">
+                        <input type="checkbox" id="switchSpeed" onchange="handleSpeedFeature(this.checked)">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -516,15 +507,23 @@
         <div class="sheet-handle" onclick="closeIosSheetMenu()"></div>
         <div class="sheet-title">Performance Optimizer Set</div>
         <div class="sheet-scroll-content">
-            <div class="section-header">Performance Tuning</div>
+            <div class="section-header">Tweak & Kepekaan Sensor</div>
             <div class="ios-group">
                 <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Easy Drag</span><span class="feature-desc">Mempermudah koordinat pergerakan drag geser agar terasa lebih ringan</span></div>
+                    <div class="feature-info"><span class="feature-title">Easy Drag Mulus</span><span class="feature-desc">Mempermudah koordinat pergerakan drag geser agar terasa lebih ringan.</span></div>
                     <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(1, this.checked)"><span class="slider"></span></label>
                 </div>
                 <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">FPS Boost</span><span class="feature-desc">Memaksa peningkatan kestabilan frame rate subsistem Android</span></div>
+                    <div class="feature-info"><span class="feature-title">Drag HS / Aim Target</span><span class="feature-desc">Mengunci konsistensi titik tengah layar saat melepas tembakan beruntun.</span></div>
+                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(2, this.checked)"><span class="slider"></span></label>
+                </div>
+                <div class="feature-row">
+                    <div class="feature-info"><span class="feature-title">FPS Boost Stabilizer</span><span class="feature-desc">Memaksa peningkatan kestabilan frame rate subsistem Android runtime.</span></div>
                     <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(3, this.checked)"><span class="slider"></span></label>
+                </div>
+                <div class="feature-row">
+                    <div class="feature-info"><span class="feature-title">Sensitivity Tuning</span><span class="feature-desc">Meningkatkan rasio pergerakan kursor ke level pointer tertinggi (+7).</span></div>
+                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(4, this.checked)"><span class="slider"></span></label>
                 </div>
             </div>
         </div>
@@ -533,10 +532,16 @@
     <div class="sheet-backdrop" id="addSheetBackdrop" onclick="closeAddGamesSheet()"></div>
     <div class="ios-bottom-sheet" id="addGamesSheet" style="width: 68%; max-height: 78%;">
         <div class="sheet-handle" onclick="closeAddGamesSheet()"></div>
-        <div class="sheet-title">Tambah Permainan</div>
+        <div class="sheet-title">Tambah Permainan & Aplikasi</div>
+        
         <div class="search-container">
-            <input type="text" id="appSearchInput" class="search-input" placeholder="Cari aplikasi atau game..." oninput="filterApps()">
+            <svg class="search-icon-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="appSearchInput" class="search-input" placeholder="Cari berdasarkan nama atau huruf pertama (contoh: Free)..." oninput="filterAppsOnSearch()">
         </div>
+
         <div class="sheet-scroll-content" id="addGamesList"></div>
     </div>
 
@@ -550,16 +555,56 @@
     </div>
 
     <input type="file" id="inputBgFile" accept="image/*" style="display: none;" onchange="handleBackgroundSelected(this)">
-    <div class="toast-notify" id="toastBox">Mesin Sinkronisasi Aktif!</div>
+    <div class="toast-notify" id="toastBox">Sistem Siap Digunakan</div>
 
     <script>
-        // PERUBAHAN: Aplikasi dibikin kosong bawaan agar tidak langsung muncul di awal
         let installedApps = [];
         let selectedPackageName = "";
         let enabledGames = new Set([]);
-        let searchQuery = "";
+        let audioCtx = null;
 
-        // Fungsi bawaan untuk menampung data dari sistem Android jika di-inject lewat WebView Bridge
+        // FITUR BARU: Generator sound effect click menggunakan Web Audio API tanpa perlu file mp3 luar
+        function playClickSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine'; 
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime); 
+                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08); 
+                
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {
+                console.log("Audio Error context:", e);
+            }
+        }
+
+        // Mendapatkan icon bawaan cerdas berdasarkan nama paket/aplikasi jika mentah tidak ada icon base64
+        function getSmartIcon(appName, pkgName) {
+            const name = appName.toLowerCase();
+            const pkg = pkgName.toLowerCase();
+            
+            if (pkg.includes('freefire') || pkg.includes('dts') || name.includes('fire') || pkg.includes('game') || name.includes('pubg') || name.includes('mobile legends')) {
+                return "🎮"; // Icon Permainan
+            } else if (pkg.includes('youtube') || pkg.includes('vlc') || pkg.includes('netflix') || name.includes('video') || name.includes('music') || name.includes('tv')) {
+                return "🎬"; // Icon Media
+            } else {
+                return "📱"; // Icon Aplikasi Umum
+            }
+        }
+
         window.setInstalledAppsData = function(jsonString) {
             try {
                 installedApps = JSON.parse(jsonString);
@@ -567,7 +612,7 @@
             } catch(e) {
                 showToast("Gagal memuat aplikasi sistem");
             }
-        }
+        };
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
@@ -592,12 +637,16 @@
         }
 
         function profileAction(url) {
-            window.open(url, '_blank');
+            if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === "function") {
+                window.AndroidBridge.openExternalUrl(url);
+            } else {
+                window.open(url, '_blank');
+            }
         }
 
         function checkFreeFireMenuVisibility(pkgName) {
             const btnMenuGame = document.getElementById('btnMenuGame');
-            if (pkgName === "com.dts.freefireth" || pkgName === "com.dts.freefiremax") {
+            if (pkgName.includes("freefire") || pkgName.includes("dts")) {
                 btnMenuGame.style.display = "flex";
             } else {
                 btnMenuGame.style.display = "none";
@@ -622,55 +671,32 @@
             checkFreeFireMenuVisibility(pkg);
         }
 
-        function openGameMenuSheet() {
-            document.getElementById('gameMenuBackdrop').classList.add('show');
-            document.getElementById('gameMenuSheet').classList.add('show');
-        }
-
-        function closeGameMenuSheet() {
-            document.getElementById('gameMenuBackdrop').classList.remove('show');
-            document.getElementById('gameMenuSheet').classList.remove('show');
-        }
-
-        function toggleGameModeFeature(isChecked) {
+        function handleFeatureToggle(id, isChecked) {
             if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
-                window.AndroidBridge.triggerFeatureSwitch(101, isChecked);
+                window.AndroidBridge.triggerFeatureSwitch(id, isChecked);
+            } else {
+                showToast(`Mod ID ${id} diubah ke ${isChecked}`);
             }
-            showToast(isChecked ? "Ultra Game Mode Aktif!" : "Ultra Game Mode Nonaktif");
         }
 
-        // PERUBAHAN: Animasi ditrigger pada "Tingkatkan Kecepatan RAM"
-        function toggleSpeedFeature(isChecked) {
+        function handleSpeedFeature(isChecked) {
             if (isChecked) {
                 runRogAnimation("RAM SPEED BOOSTER", () => {
-                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
-                        window.AndroidBridge.triggerFeatureSwitch(102, true);
-                    }
-                    showToast("RAM berhasil dibersihkan! ⚡");
+                    handleFeatureToggle(102, true);
                 });
             } else {
-                if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
-                    window.AndroidBridge.triggerFeatureSwitch(102, false);
-                }
-                showToast("Optimalisasi RAM mati");
+                handleFeatureToggle(102, false);
             }
         }
 
-        // PERUBAHAN: Switch Cache tidak menghidupkan switch lain secara otomatis (Mandiri)
-        function toggleCacheFeature(isChecked) {
+        function handleCacheFeature(isChecked) {
             if (isChecked) {
                 runRogAnimation("CLEARING SYSTEM CACHE", () => {
-                    showToast("Cache sistem dibersihkan! 🔥");
-                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
-                        window.AndroidBridge.triggerFeatureSwitch(103, true);
-                    }
+                    handleFeatureToggle(103, true);
                 });
-            } else {
-                showToast("Pembersihan berkala dimatikan.");
             }
         }
 
-        // PERUBAHAN: Generator Animasi Angka dan Efek Scan ala Game Turbo ROG
         function runRogAnimation(titleText, callback) {
             const overlay = document.getElementById('cacheAnimOverlay');
             const textAnim = document.getElementById('cacheAnimText');
@@ -699,7 +725,7 @@
         function renderGames() {
             const wrapper = document.getElementById('gameListWrapper');
             if (installedApps.length === 0 || enabledGames.size === 0) {
-                wrapper.innerHTML = `<div style="color:#8e8e93; padding:20px; font-size:14px;">Belum ada game. Tambahkan lewat tombol + di kanan bawah.</div>`;
+                wrapper.innerHTML = `<div style="color:#8e8e93; padding:20px; font-size:14px;">Belum ada aplikasi. Tambahkan lewat tombol + di kanan bawah.</div>`;
                 return;
             }
             
@@ -709,20 +735,33 @@
                 const div = document.createElement('div');
                 div.className = `game-item ${app.packageName === selectedPackageName ? 'active' : ''}`;
                 div.id = `app-${index}`;
-                div.onclick = () => selectApp(app.packageName, app.appName);
+                div.onclick = (e) => { selectApp(app.packageName, app.appName); e.stopPropagation(); };
                 
-                const iconSrc = app.icon ? `data:image/png;base64,${app.icon}` : "https://via.placeholder.com/38/2c2c2e/ffffff?text=🎮";
-                div.innerHTML = `
-                    <img src="${iconSrc}" alt="icon">
-                    <span>${app.appName}</span>
-                `;
+                if (app.icon) {
+                    div.innerHTML = `<img src="data:image/png;base64,${app.icon}" alt="icon"><span>${app.appName}</span>`;
+                } else {
+                    const fallback = getSmartIcon(app.appName, app.packageName);
+                    div.innerHTML = `<div class="fallback-icon">${fallback}</div><span>${app.appName}</span>`;
+                }
                 wrapper.appendChild(div);
             });
 
-            if(selectedPackageName) {
+            if(selectedPackageName && enabledGames.has(selectedPackageName)) {
                 const activeApp = installedApps.find(app => app.packageName === selectedPackageName);
                 if(activeApp) selectApp(activeApp.packageName, activeApp.appName);
+            } else {
+                document.getElementById('txtCurrentGame').innerText = "Pilih Aplikasi";
             }
+        }
+
+        function openGameMenuSheet() {
+            document.getElementById('gameMenuBackdrop').classList.add('show');
+            document.getElementById('gameMenuSheet').classList.add('show');
+        }
+
+        function closeGameMenuSheet() {
+            document.getElementById('gameMenuBackdrop').classList.remove('show');
+            document.getElementById('gameMenuSheet').classList.remove('show');
         }
 
         function openIosSheetMenu() {
@@ -738,7 +777,8 @@
         function triggerAddApps() {
             document.getElementById('addSheetBackdrop').classList.add('show');
             document.getElementById('addGamesSheet').classList.add('show');
-            renderAllAppsForSelection();
+            document.getElementById('appSearchInput').value = ""; // Reset input kata kunci pencarian
+            renderAllAppsForSelection("");
         }
 
         function closeAddGamesSheet() {
@@ -746,29 +786,58 @@
             document.getElementById('addGamesSheet').classList.remove('show');
         }
 
-        function renderAllAppsForSelection() {
+        // FITUR BARU: Fungsi filter pencarian dari input secara realtime berdasarkan huruf pertama atau string kecocokan
+        function filterAppsOnSearch() {
+            const query = document.getElementById('appSearchInput').value;
+            renderAllAppsForSelection(query);
+        }
+
+        function renderAllAppsForSelection(filterText) {
             const listContainer = document.getElementById('addGamesList');
             if (installedApps.length === 0) {
-                listContainer.innerHTML = `<div style="color:#8e8e93; padding:15px; font-size:13px;">Menunggu sinkronisasi aplikasi dari perangkat...</div>`;
+                listContainer.innerHTML = `<div style="color:#8e8e93; padding:15px; font-size:13px;">Menunggu data dari HP...</div>`;
                 return;
             }
             listContainer.innerHTML = "";
+            
+            const lowerFilter = filterText.toLowerCase();
+            let countVisible = 0;
+
             installedApps.forEach(app => {
+                const name = app.appName.toLowerCase();
+                const pkg = app.packageName.toLowerCase();
+                
+                // Pengecekan apakah nama diawali huruf pencarian atau mengandung kata kunci
+                if (filterText !== "" && !name.includes(lowerFilter) && !pkg.includes(lowerFilter)) {
+                    return; // Lewati aplikasi yang tidak cocok
+                }
+
+                countVisible++;
                 const isChecked = enabledGames.has(app.packageName) ? "checked" : "";
                 const row = document.createElement('div');
                 row.className = "feature-row";
+                
+                const currentIcon = app.icon ? `<img src="data:image/png;base64,${app.icon}" style="width:34px;height:34px;border-radius:8px;margin-right:12px;object-fit:cover;">` : `<span style="font-size:24px;margin-right:15px;display:inline-block;vertical-align:middle;">${getSmartIcon(app.appName, app.packageName)}</span>`;
+
                 row.innerHTML = `
-                    <div class="feature-info">
-                        <span class="feature-title">${app.appName}</span>
-                        <span class="feature-desc">${app.packageName}</span>
+                    <div class="feature-info" style="flex-direction:row; align-items:center; width:80%;">
+                        ${currentIcon}
+                        <div style="display:flex; flex-direction:column;">
+                            <span class="feature-title">${app.appName}</span>
+                            <span class="feature-desc">${app.packageName}</span>
+                        </div>
                     </div>
-                    <label class="switch">
+                    <label class="switch" onclick="event.stopPropagation();">
                         <input type="checkbox" ${isChecked} onchange="toggleGameRegistration('${app.packageName}', this.checked)">
                         <span class="slider"></span>
                     </label>
                 `;
                 listContainer.appendChild(row);
             });
+
+            if (countVisible === 0) {
+                listContainer.innerHTML = `<div style="color:#8e8e93; text-align:center; padding:30px; font-size:14px;">Aplikasi "${filterText}" tidak ditemukan.</div>`;
+            }
         }
 
         function toggleGameRegistration(pkg, isChecked) {
@@ -778,7 +847,6 @@
                 enabledGames.delete(pkg);
                 if (selectedPackageName === pkg) {
                     selectedPackageName = "";
-                    document.getElementById('txtCurrentGame').innerText = "Pilih Game";
                 }
             }
             saveToStorage();
@@ -787,7 +855,7 @@
 
         function actionStartGame() {
             if (!selectedPackageName) {
-                showToast("Silakan pilih game terlebih dahulu!");
+                showToast("Silakan pilih aplikasi terlebih dahulu!");
                 return;
             }
             if (window.AndroidBridge && typeof window.AndroidBridge.launchGame === "function") {
@@ -797,15 +865,14 @@
             }
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toastBox');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2200);
+        function triggerBackgroundPicker() {
+            if (window.AndroidBridge && typeof window.AndroidBridge.triggerBackgroundPicker === "function") {
+                window.AndroidBridge.triggerBackgroundPicker();
+            } else {
+                document.getElementById('inputBgFile').click();
+            }
         }
-        
-        function handleFeatureToggle(id, isChecked) { showToast(`Mod ${id} diubah ke ${isChecked}`); }
-        function triggerBackgroundPicker() { document.getElementById('inputBgFile').click(); }
+
         function handleBackgroundSelected(input) {
             const file = input.files[0];
             if (file) {
@@ -813,6 +880,13 @@
                 reader.onload = function(e) { document.getElementById('bgContainer').style.backgroundImage = `url('${e.target.result}')`; };
                 reader.readAsDataURL(file);
             }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
         }
     </script>
 </body>
