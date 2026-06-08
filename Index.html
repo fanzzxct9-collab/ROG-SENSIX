@@ -10,6 +10,7 @@
             margin: 0; padding: 0;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Hilangkan highlight bawaan Chrome */
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Roboto, sans-serif;
         }
         body, html {
@@ -74,7 +75,10 @@
             transform: translateY(-1px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
-        .game-item:active { transform: scale(0.985); }
+        .game-item:active { 
+            transform: scale(0.96); 
+            transition: transform 0.08s ease;
+        }
         .game-item.active {
             background: rgba(255, 255, 255, 0.13);
             border: 1px solid rgba(255, 255, 255, 0.18); 
@@ -88,14 +92,19 @@
             justify-content: space-between; align-items: flex-end; position: relative; z-index: 2; 
         }
         .top-status-area { text-align: right; margin-top: 8px; }
+        
+        /* Ukuran judul game lebih kecil */
         .active-game-title { 
-            font-size: 46px; font-weight: 700; text-transform: uppercase; 
-            letter-spacing: -0.8px; color: #ffffff; 
-            text-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            font-size: 36px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: -0.8px; 
+            color: #ffffff; 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.55);
             line-height: 1.05;
         }
         
-        /* GRUP TOMBOL - Sekarang Vertical Premium */
+        /* GRUP TOMBOL - Hanya Start Game */
         .action-button-group { 
             display: flex; 
             flex-direction: column; 
@@ -110,54 +119,56 @@
             align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
         }
-        .btn:active { transform: scale(0.96); }
+        .btn:active { 
+            transform: scale(0.95); 
+            transition: transform 0.08s ease;
+        }
         
-        /* Tombol START GAME - Paling Premium */
+        /* Tombol START GAME - Teal Premium */
         .btn-start-game { 
-            background: #ffffff; 
-            color: #000000; 
-            font-weight: 800; 
-            min-width: 195px;
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+            background: #0E7C7B; 
+            color: #ffffff; 
+            font-weight: 700; 
+            min-width: 168px;
+            padding: 13px 38px;
+            font-size: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 26px rgba(14, 124, 123, 0.45);
         }
         .btn-start-game:hover { 
-            background: #f0f0f0; 
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+            background: #0A6A69; 
+            box-shadow: 0 12px 30px rgba(14, 124, 123, 0.55);
         }
         
-        /* Tombol Floating Overlay - Secondary Premium */
-        .btn-open-features { 
-            background: rgba(255, 255, 255, 0.07); 
-            color: #ffffff; 
-            border: 1px solid rgba(255, 255, 255, 0.12); 
-            backdrop-filter: blur(22px); 
-            -webkit-backdrop-filter: blur(22px);
-            padding: 11px 26px;
-            font-size: 14px;
-            font-weight: 600;
-            min-width: 175px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        /* Utility Icon Buttons - 3 tombol icon di samping */
+        .utility-box { 
+            display: flex; 
+            gap: 14px; 
+            margin-top: 10px; 
         }
-        .btn-open-features:hover { 
-            background: rgba(255, 255, 255, 0.12); 
-            border-color: rgba(255, 255, 255, 0.2);
+        .btn-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
-
-        .utility-box { display: flex; gap: 12px; margin-top: 8px; }
-        .btn-utility { 
-            background: rgba(255, 255, 255, 0.045); 
-            border: 1px solid rgba(255, 255, 255, 0.06); 
-            color: #8e8e93; 
-            padding: 9px 16px; 
-            border-radius: 11px; 
-            font-size: 12.5px; 
-            cursor: pointer; 
-            font-weight: 500; 
-            transition: all 0.2s ease;
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.13);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
         }
-        .btn-utility:hover { 
-            color: #ffffff; 
-            background: rgba(255, 255, 255, 0.08);
+        .btn-icon:active {
+            transform: scale(0.92);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: transform 0.08s ease;
         }
 
         /* ==================== BOTTOM SHEET PREMIUM ==================== */
@@ -272,28 +283,49 @@
 
         <div class="main-panel-right">
             <div class="top-status-area">
+                <!-- Ukuran judul sekarang lebih kecil -->
                 <h1 class="active-game-title" id="txtCurrentGame">PILIH GAME</h1>
             </div>
 
-            <!-- TOMBOL DIUBAH MENJADI VERTICAL (START GAME DI ATAS, FLOATING OVERLAY DI BAWAH) -->
+            <!-- Hanya tombol START GAME (besar & teal) -->
             <div class="action-button-group">
                 <button class="btn btn-start-game" onclick="actionStartGame()">
-                    <span>START GAME</span>
-                </button>
-                <button class="btn btn-open-features" onclick="openIosSheetMenu()">
-                    <span>Floating Overlay</span>
+                    <span>Start Game</span>
                 </button>
             </div>
 
+            <!-- 3 tombol icon kecil di samping (Tambah, Background, Floating Overlay) -->
             <div class="utility-box">
-                <button class="btn-utility" onclick="triggerBackgroundPicker()">Ganti Background</button>
-                <button class="btn-utility" onclick="triggerAddApps()">Kelola Aplikasi</button>
+                <!-- Tombol Tambah Permainan -->
+                <button class="btn-icon" onclick="triggerAddApps()" title="Tambah Permainan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+
+                <!-- Tombol Ganti Background -->
+                <button class="btn-icon" onclick="triggerBackgroundPicker()" title="Ganti Background">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Tombol Floating Overlay (sekarang icon, di samping) -->
+                <button class="btn-icon" onclick="openIosSheetMenu()" title="Floating Overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="14" height="14" rx="2"/>
+                        <rect x="7" y="7" width="14" height="14" rx="2"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Existing Mod Menu Sheet -->
     <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeIosSheetMenu()"></div>
-    
     <div class="ios-bottom-sheet" id="iosBottomSheet">
         <div class="sheet-handle" onclick="closeIosSheetMenu()"></div>
         <div class="sheet-title">Performance Optimizer Set</div>
@@ -341,31 +373,105 @@
         </div>
     </div>
 
+    <!-- Tambah Permainan Sheet -->
+    <div class="sheet-backdrop" id="addSheetBackdrop" onclick="closeAddGamesSheet()"></div>
+    <div class="ios-bottom-sheet" id="addGamesSheet" style="width: 68%; max-height: 78%;">
+        <div class="sheet-handle" onclick="closeAddGamesSheet()"></div>
+        <div class="sheet-title">Tambah Permainan</div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px;">
+            <div style="color: #8e8e93; font-size: 13.5px; font-weight: 500;">
+                Menambahkan <span id="enabledCount" style="color:#ffffff; font-weight:700;">0</span> permainan
+            </div>
+        </div>
+        
+        <div class="sheet-scroll-content" id="addGamesList">
+            <!-- Diisi otomatis oleh JavaScript -->
+        </div>
+    </div>
+
     <input type="file" id="inputBgFile" accept="image/*" style="display: none;" onchange="handleBackgroundSelected(this)">
     <div class="toast-notify" id="toastBox">Mesin Sinkronisasi Aktif!</div>
 
     <script>
-        // ==================== SEMUA JAVASCRIPT TETAP SAMA ====================
         let installedApps = [];
         let selectedPackageName = "";
+        let enabledGames = new Set();
 
-        function openIosSheetMenu() {
-            document.getElementById('sheetBackdrop').classList.add('show');
-            document.getElementById('iosBottomSheet').classList.add('show');
+        function openAddGamesSheet() {
+            const backdrop = document.getElementById('addSheetBackdrop');
+            const sheet = document.getElementById('addGamesSheet');
+            const listContainer = document.getElementById('addGamesList');
             
-            if (window.AndroidBridge && typeof window.AndroidBridge.openFloatingMenu === "function") {
-                window.AndroidBridge.openFloatingMenu();
+            listContainer.innerHTML = '';
+
+            if (installedApps.length === 0) {
+                listContainer.innerHTML = '<div style="color:#8e8e93; padding:30px 20px; text-align:center;">Tidak ada aplikasi terdeteksi.</div>';
+            } else {
+                installedApps.forEach(app => {
+                    const row = document.createElement('div');
+                    row.className = 'feature-row';
+                    row.style.alignItems = 'center';
+                    
+                    const isChecked = enabledGames.has(app.packageName);
+                    
+                    row.innerHTML = `
+                        <div class="feature-info" style="width: 76%;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <img src="data:image/png;base64,${app.icon}" 
+                                     style="width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 3px 10px rgba(0,0,0,0.35); flex-shrink:0;">
+                                <div style="min-width:0;">
+                                    <div class="feature-title" style="margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${app.appName}</div>
+                                    <div class="feature-desc" style="font-size: 10.5px; opacity: 0.75;">${app.packageName}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" ${isChecked ? 'checked' : ''} 
+                                   onchange="toggleGameEnabled('${app.packageName}', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    `;
+                    listContainer.appendChild(row);
+                });
             }
+
+            backdrop.classList.add('show');
+            sheet.classList.add('show');
+            updateEnabledCount();
         }
 
-        function closeIosSheetMenu() {
-            document.getElementById('sheetBackdrop').classList.remove('show');
-            document.getElementById('iosBottomSheet').classList.remove('show');
+        function closeAddGamesSheet() {
+            document.getElementById('addSheetBackdrop').classList.remove('show');
+            document.getElementById('addGamesSheet').classList.remove('show');
+        }
+
+        function toggleGameEnabled(pkg, isChecked) {
+            if (isChecked) {
+                enabledGames.add(pkg);
+            } else {
+                enabledGames.delete(pkg);
+                if (selectedPackageName === pkg) {
+                    selectedPackageName = "";
+                    document.getElementById('txtCurrentGame').innerText = "PILIH GAME";
+                    document.querySelectorAll('.game-item').forEach(el => el.classList.remove('active'));
+                }
+            }
+            renderGames();
+            updateEnabledCount();
+        }
+
+        function updateEnabledCount() {
+            const countEl = document.getElementById('enabledCount');
+            if (countEl) countEl.innerText = enabledGames.size;
         }
 
         function updateAppListFromAndroid(jsonString) {
             try {
                 installedApps = JSON.parse(jsonString);
+                if (enabledGames.size === 0) {
+                    enabledGames = new Set(installedApps.map(app => app.packageName));
+                }
                 renderGames();
             } catch (e) {
                 document.getElementById('gameListWrapper').innerHTML = "<div style='color:#ff453a; padding:20px;'>Gagal memproses JSON internal.</div>";
@@ -381,7 +487,12 @@
                 return;
             }
 
+            let hasVisible = false;
+
             installedApps.forEach((app, index) => {
+                if (!enabledGames.has(app.packageName)) return;
+                hasVisible = true;
+
                 const div = document.createElement('div');
                 div.className = `game-item ${app.packageName === selectedPackageName ? 'active' : ''}`;
                 div.id = `app-${index}`;
@@ -394,22 +505,46 @@
                 wrapper.appendChild(div);
             });
 
-            if (installedApps.length > 0 && selectedPackageName === "") {
-                selectApp(installedApps[0].packageName, installedApps[0].appName);
+            if (!hasVisible) {
+                wrapper.innerHTML = `
+                    <div style="color:#8e8e93; padding:24px 18px; font-size:14px; line-height:1.5;">
+                        Belum ada permainan yang dipilih.<br>
+                        Tekan tombol <strong>+</strong> di bawah untuk menambah permainan.
+                    </div>
+                `;
+                return;
+            }
+
+            if (selectedPackageName === "" && hasVisible) {
+                const firstVisible = installedApps.find(app => enabledGames.has(app.packageName));
+                if (firstVisible) selectApp(firstVisible.packageName, firstVisible.appName);
             }
         }
 
         function selectApp(pkg, name) {
+            if (!enabledGames.has(pkg)) return;
             selectedPackageName = pkg;
             document.getElementById('txtCurrentGame').innerText = name;
-            
             document.querySelectorAll('.game-item').forEach(el => el.classList.remove('active'));
             installedApps.forEach((app, index) => {
-                if(app.packageName === pkg) {
+                if (app.packageName === pkg) {
                     const el = document.getElementById(`app-${index}`);
-                    if(el) el.classList.add('active');
+                    if (el) el.classList.add('active');
                 }
             });
+        }
+
+        function openIosSheetMenu() {
+            document.getElementById('sheetBackdrop').classList.add('show');
+            document.getElementById('iosBottomSheet').classList.add('show');
+            if (window.AndroidBridge && typeof window.AndroidBridge.openFloatingMenu === "function") {
+                window.AndroidBridge.openFloatingMenu();
+            }
+        }
+
+        function closeIosSheetMenu() {
+            document.getElementById('sheetBackdrop').classList.remove('show');
+            document.getElementById('iosBottomSheet').classList.remove('show');
         }
 
         function handleFeatureToggle(id, isChecked) {
@@ -441,10 +576,9 @@
         }
 
         function triggerAddApps() {
-            if (window.AndroidBridge) {
-                window.AndroidBridge.manageAppsSettings();
-            } else {
-                showToast("Membuka Pengaturan Aplikasi");
+            openAddGamesSheet();
+            if (window.AndroidBridge && typeof window.AndroidBridge.manageAppsSettings === "function") {
+                // window.AndroidBridge.manageAppsSettings();
             }
         }
 
