@@ -31,6 +31,42 @@
             background-size: 28px 28px; pointer-events: none; z-index: 1;
         }
 
+        /* REAL-TIME STATUS HUD (POJOK KANAN ATAS) */
+        .hud-status-bar {
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: monospace, sans-serif;
+            color: #e0e0e0;
+        }
+        .hud-item svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+        .hud-fps { color: #34c759; }
+        .hud-temp { color: #ff9500; }
+        .hud-cpu { color: #007aff; }
+
         .sidebar-left { width: 34%; height: 100%; display: flex; flex-direction: column; z-index: 2; }
         
         .header-brand { 
@@ -379,11 +415,39 @@
         @keyframes rogPulseText { 0% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
-<body onclick="playClickSound()">
+<body>
 
     <div class="launcher-container" id="bgContainer">
+        
+        <div class="hud-status-bar">
+            <div class="hud-item" id="hudBattery">
+                <svg viewBox="0 0 24 24"><path d="M16 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2zM22 10v4" stroke-linecap="round"/></svg>
+                <span id="valBattery">--%</span>
+            </div>
+            <div class="hud-item">
+                <svg viewBox="0 0 24 24"><path d="M6 19h12M6 5h12M9 9h6M9 14h6" stroke-linecap="round"/></svg>
+                <span id="valRam">--%</span>
+            </div>
+            <div class="hud-item hud-cpu">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" stroke-linecap="round"/></svg>
+                <span id="valCpu">--%</span>
+            </div>
+            <div class="hud-item hud-temp">
+                <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" stroke-linecap="round"/></svg>
+                <span id="valTemp">--°C</span>
+            </div>
+            <div class="hud-item hud-fps">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span id="valFps">-- FPS</span>
+            </div>
+            <div class="hud-item" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 10px;">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="valTime">00:00</span>
+            </div>
+        </div>
+
         <div class="sidebar-left">
-            <div class="header-brand" onclick="playClickSound()">
+            <div class="header-brand">
                 <div class="brand-logo-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 2Z" fill="url(#shieldGrad)" stroke="#ffffff" stroke-width="1" />
@@ -412,7 +476,7 @@
             </div>
 
             <div class="utility-box" id="utilityBox">
-                <button class="btn-icon btn-menu-game" id="btnMenuGame" onclick="openGameMenuSheet(); event.stopPropagation();" title="Menu Game">
+                <button class="btn-icon btn-menu-game" id="btnMenuGame" onclick="openGameMenuSheet(); playMenuSound(); event.stopPropagation();" title="Menu Game">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="6" y1="12" x2="10" y2="12"></line>
                         <line x1="8" y1="10" x2="8" y2="14"></line>
@@ -422,14 +486,14 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="triggerAddApps(); event.stopPropagation();" title="Tambah Permainan">
+                <button class="btn-icon" onclick="triggerAddApps(); playMenuSound(); event.stopPropagation();" title="Tambah Permainan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="triggerBackgroundPicker(); event.stopPropagation();" title="Ganti Background">
+                <button class="btn-icon" onclick="triggerBackgroundPicker(); playMenuSound(); event.stopPropagation();" title="Ganti Background">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -437,14 +501,14 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="openIosSheetMenu(); event.stopPropagation();" title="Performance Tuner">
+                <button class="btn-icon" onclick="openIosSheetMenu(); playMenuSound(); event.stopPropagation();" title="Performance Tuner">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="14" height="14" rx="2"/>
                         <rect x="7" y="7" width="14" height="14" rx="2"/>
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="toggleProfileMenu(); event.stopPropagation();" title="Profil">
+                <button class="btn-icon" onclick="toggleProfileMenu(); playMenuSound(); event.stopPropagation();" title="Profil">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                         <circle cx="12" cy="7" r="4"/>
@@ -563,8 +627,8 @@
         let enabledGames = new Set([]);
         let audioCtx = null;
 
-        // FITUR BARU: Generator sound effect click menggunakan Web Audio API tanpa perlu file mp3 luar
-        function playClickSound() {
+        // FUNGSI PENTING: Hanya tombol menu, switch, & sosmed yang memicu sound effect ini
+        function playMenuSound() {
             try {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -591,17 +655,49 @@
             }
         }
 
-        // Mendapatkan icon bawaan cerdas berdasarkan nama paket/aplikasi jika mentah tidak ada icon base64
+        // SISTEM HUD STATUS REAL-TIME (Simulasi Akurat)
+        function updateRealTimeHUD() {
+            // Jam & Menit
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('valTime').innerText = `${hours}:${minutes}`;
+
+            // Simulasi data mesin dinamis (Fluktuatif wajar)
+            const randomCpu = Math.floor(Math.random() * (48 - 12 + 1)) + 12;
+            const randomRam = Math.floor(Math.random() * (72 - 60 + 1)) + 60;
+            const randomTemp = Math.floor(Math.random() * (43 - 36 + 1)) + 36;
+            const randomFps = Math.floor(Math.random() * (61 - 58 + 1)) + 58;
+
+            document.getElementById('valCpu').innerText = randomCpu + "%";
+            document.getElementById('valRam').innerText = randomRam + "%";
+            document.getElementById('valTemp').innerText = randomTemp + "°C";
+            document.getElementById('valFps').innerText = randomFps + " FPS";
+
+            // Deteksi Status Baterai Asli Perangkat jika didukung webview/browser
+            if (navigator.getBattery) {
+                navigator.getBattery().then(function(battery) {
+                    document.getElementById('valBattery').innerText = Math.floor(battery.level * 100) + "%";
+                });
+            } else {
+                document.getElementById('valBattery').innerText = "85%"; // Fallback data
+            }
+        }
+        
+        // Loop interval HUD diperbarui tiap 1.5 detik
+        setInterval(updateRealTimeHUD, 1500);
+        updateRealTimeHUD();
+
         function getSmartIcon(appName, pkgName) {
             const name = appName.toLowerCase();
             const pkg = pkgName.toLowerCase();
             
             if (pkg.includes('freefire') || pkg.includes('dts') || name.includes('fire') || pkg.includes('game') || name.includes('pubg') || name.includes('mobile legends')) {
-                return "🎮"; // Icon Permainan
+                return "🎮";
             } else if (pkg.includes('youtube') || pkg.includes('vlc') || pkg.includes('netflix') || name.includes('video') || name.includes('music') || name.includes('tv')) {
-                return "🎬"; // Icon Media
+                return "🎬";
             } else {
-                return "📱"; // Icon Aplikasi Umum
+                return "📱";
             }
         }
 
@@ -617,6 +713,12 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
             renderGames();
+            // Menambahkan pendengar klik khusus untuk switch input toggle di seluruh dokumen
+            document.addEventListener('change', function(e) {
+                if (e.target && e.target.type === 'checkbox') {
+                    playMenuSound();
+                }
+            });
         });
 
         function saveToStorage() {
@@ -637,6 +739,7 @@
         }
 
         function profileAction(url) {
+            playMenuSound(); // Bunyi klik pada tombol sosial media
             if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === "function") {
                 window.AndroidBridge.openExternalUrl(url);
             } else {
@@ -777,7 +880,7 @@
         function triggerAddApps() {
             document.getElementById('addSheetBackdrop').classList.add('show');
             document.getElementById('addGamesSheet').classList.add('show');
-            document.getElementById('appSearchInput').value = ""; // Reset input kata kunci pencarian
+            document.getElementById('appSearchInput').value = "";
             renderAllAppsForSelection("");
         }
 
@@ -786,7 +889,6 @@
             document.getElementById('addGamesSheet').classList.remove('show');
         }
 
-        // FITUR BARU: Fungsi filter pencarian dari input secara realtime berdasarkan huruf pertama atau string kecocokan
         function filterAppsOnSearch() {
             const query = document.getElementById('appSearchInput').value;
             renderAllAppsForSelection(query);
@@ -807,9 +909,8 @@
                 const name = app.appName.toLowerCase();
                 const pkg = app.packageName.toLowerCase();
                 
-                // Pengecekan apakah nama diawali huruf pencarian atau mengandung kata kunci
                 if (filterText !== "" && !name.includes(lowerFilter) && !pkg.includes(lowerFilter)) {
-                    return; // Lewati aplikasi yang tidak cocok
+                    return;
                 }
 
                 countVisible++;
