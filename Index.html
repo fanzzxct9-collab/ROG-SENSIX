@@ -22,7 +22,8 @@
             width: 100%; height: 100%; position: relative;
             background-image: linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%);
             background-size: cover; background-position: center;
-            display: flex; padding: 28px 50px; transition: background 0.5s ease;
+            /* Diubah dari 50px menjadi 25px di bagian kanan agar elemen lebih mempet ke kanan layar */
+            display: flex; padding: 28px 25px 28px 50px; transition: background 0.5s ease;
         }
         
         .launcher-container::before {
@@ -35,7 +36,7 @@
         .hud-status-bar {
             position: absolute;
             top: 0;
-            right: 50px;
+            right: 25px; /* Disesuaikan agar sejajar dengan elemen kanan */
             display: flex;
             align-items: center;
             gap: 14px;
@@ -64,7 +65,6 @@
             stroke: currentColor;
             stroke-width: 2.5;
         }
-        /* Mengubah warna warni menjadi netral */
         .hud-fps, .hud-temp, .hud-cpu { color: #d1d1d6; }
 
         .sidebar-left { width: 34%; height: 100%; display: flex; flex-direction: column; z-index: 2; }
@@ -790,11 +790,12 @@
         function handleFocusModeFeature(isChecked) {
             if (isChecked) {
                 runRogAnimation("FOCUS MODE ENGAGED", () => {
-                    handleFeatureToggle(104, true); // Kirim ID 104 ke bridge Android untuk memicu hening/hemat batre sistem asli
+                    /* DIPERBAIKI: Mengirimkan ID 100 agar sinkron dengan perintah Shizuku DND/Hening/Baterai di Java */
+                    handleFeatureToggle(100, true); 
                     showToast("Mode Hening, Jangan Ganggu & Hemat Baterai Aktif!");
                 });
             } else {
-                handleFeatureToggle(104, false);
+                handleFeatureToggle(100, false);
                 showToast("Nama Mode fokus Dinonaktifkan");
             }
         }
