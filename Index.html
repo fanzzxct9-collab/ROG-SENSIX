@@ -33,7 +33,6 @@
 
         .sidebar-left { width: 34%; height: 100%; display: flex; flex-direction: column; z-index: 2; }
         
-        /* ICON BRAND BARU - CYBERPUNK GLOW SHIELD */
         .header-brand { 
             display: flex; align-items: center; gap: 14px; margin-bottom: 22px; 
         }
@@ -53,11 +52,11 @@
         }
         @keyframes logoPulse {
             0%, 100% { border-color: rgba(14, 124, 123, 0.6); box-shadow: 0 0 15px rgba(14, 124, 123, 0.3); }
-            50% { border-color: rgba(52, 199, 89, 0.8); box-shadow: 0 0 22px rgba(52, 199, 89, 0.5); }
+            50% { border-color: #ff3b30; box-shadow: 0 0 22px rgba(255, 59, 48, 0.5); }
         }
         .brand-title { 
             font-size: 26px; font-weight: 900; letter-spacing: 4px; 
-            background: linear-gradient(135deg, #ffffff 30%, #a0a0a5 100%);
+            background: linear-gradient(135deg, #ffffff 30%, #ff3b30 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-transform: uppercase; 
         }
@@ -89,33 +88,35 @@
             transition: transform 0.08s ease;
         }
         .game-item.active {
-            background: rgba(255, 255, 255, 0.13);
-            border: 1px solid rgba(255, 255, 255, 0.18); 
+            background: rgba(255, 59, 48, 0.15);
+            border: 1px solid rgba(255, 59, 48, 0.5); 
             color: #ffffff;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 10px 28px rgba(255, 59, 48, 0.2);
         }
 
+        /* PERUBAHAN: Tata letak dirapikan, komponen tidak lagi menumpuk di tengah */
         .main-panel-right { 
             width: 66%; height: 100%; display: flex; flex-direction: column; 
-            justify-content: flex-end; align-items: flex-end; position: relative; z-index: 2; 
+            justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; 
+            padding-left: 40px;
         }
         
         .action-button-group { 
             display: flex; 
             flex-direction: column; 
-            gap: 8px; 
+            gap: 12px; 
             width: auto; 
-            align-items: flex-end;
-            margin-bottom: 20px;
+            align-items: flex-start;
+            margin-top: 10px;
         }
 
         .active-game-title { 
-            font-size: 12px; 
-            font-weight: 700; 
+            font-size: 36px; 
+            font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            color: #8e8e93; 
-            margin-right: 6px;
+            letter-spacing: 1px; 
+            color: #ffffff; 
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
         
         .btn {
@@ -129,26 +130,32 @@
             transition: transform 0.08s ease;
         }
         
+        /* Gaya tombol start game bernuansa ROG Turbo */
         .btn-start-game { 
-            background: #0E7C7B; 
+            background: linear-gradient(90deg, #ff3b30 0%, #ff2d55 100%);
             color: #ffffff; 
-            font-weight: 700; 
-            min-width: 168px;
-            padding: 13px 38px;
-            font-size: 15px;
-            border-radius: 20px;
-            box-shadow: 0 10px 26px rgba(14, 124, 123, 0.45);
+            font-weight: 800; 
+            min-width: 240px;
+            padding: 16px 40px;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            clip-path: polygon(0 0, 90% 0, 100% 35%, 100% 100%, 10% 100%, 0 65%);
+            border: none;
+            box-shadow: 0 0 20px rgba(255, 59, 48, 0.4);
         }
         .btn-start-game:hover { 
-            background: #0A6A69; 
-            box-shadow: 0 12px 30px rgba(14, 124, 123, 0.55);
+            background: linear-gradient(90deg, #ff453a 0%, #ff375f 100%);
+            box-shadow: 0 0 30px rgba(255, 59, 48, 0.7);
         }
         
         .utility-box { 
             display: flex; 
             gap: 14px; 
-            margin-top: 10px; 
-            position: relative;
+            position: absolute;
+            bottom: 0;
+            right: 0;
         }
         .btn-icon {
             width: 48px;
@@ -165,14 +172,17 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
         .btn-icon:hover {
-            background: rgba(255, 255, 255, 0.13);
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+            background: rgba(255, 3d, 55, 0.15);
+            border-color: rgba(255, 59, 48, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(255, 59, 48, 0.2);
         }
-        .btn-icon:active {
-            transform: scale(0.92);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            transition: transform 0.08s ease;
+
+        .btn-menu-game {
+            background: rgba(255, 45, 85, 0.1);
+            border: 1px solid rgba(255, 45, 85, 0.4);
+            color: #ff2d55;
+            display: none;
         }
 
         /* Dropdown Profil */
@@ -213,9 +223,6 @@
         .profile-dropdown .menu-item:hover {
             background: rgba(255, 255, 255, 0.08);
         }
-        .profile-dropdown .menu-item svg {
-            flex-shrink: 0;
-        }
 
         .sheet-backdrop {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -229,13 +236,13 @@
         .ios-bottom-sheet {
             position: fixed; bottom: 0; left: 50%; width: 58%; max-height: 82%;
             transform: translate(-50%, 100%); 
-            background: rgba(26, 26, 28, 0.94);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: rgba(20, 20, 22, 0.96);
+            border: 1px solid rgba(255, 59, 48, 0.2);
             border-bottom: none;
-            border-radius: 26px 26px 0 0; 
+            border-radius: 20px 20px 0 0; 
             padding: 18px 26px 32px 26px; z-index: 100;
             display: flex; flex-direction: column;
-            box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(35px);
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -247,14 +254,13 @@
         }
         .sheet-title { 
             font-size: 15.5px; font-weight: 700; text-align: center; 
-            color: #ffffff; letter-spacing: -0.3px; margin-bottom: 16px; text-transform: uppercase; 
+            color: #ffffff; letter-spacing: 1px; margin-bottom: 16px; text-transform: uppercase; 
         }
         
         .sheet-scroll-content { flex: 1; overflow-y: auto; padding-right: 6px; }
         .sheet-scroll-content::-webkit-scrollbar { width: 3px; }
         .sheet-scroll-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
 
-        /* Gaya Kolom Pencarian iOS */
         .search-container {
             margin-bottom: 14px;
             position: relative;
@@ -273,15 +279,7 @@
         }
         .search-input:focus {
             background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8e8e93;
-            pointer-events: none;
+            border-color: rgba(255, 59, 48, 0.4);
         }
 
         .section-header { 
@@ -320,14 +318,14 @@
             background-color: white; transition: .25s cubic-bezier(0.16, 1, 0.3, 1); 
             border-radius: 50%; box-shadow: 0 3px 9px rgba(0,0,0,0.35); 
         }
-        input:checked + .slider { background-color: #34c759; border-color: #34c759; }
+        input:checked + .slider { background-color: #ff3b30; border-color: #ff3b30; }
         input:checked + .slider:before { transform: translateX(21px); }
 
         .toast-notify { 
             position: fixed; bottom: 32px; left: 50%; 
             transform: translateX(-50%) translateY(120px); 
             background: rgba(28, 28, 30, 0.94); 
-            border: 1px solid rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,59,48,0.3); 
             color: #fff; 
             padding: 11px 26px; 
             border-radius: 22px; 
@@ -339,6 +337,52 @@
             box-shadow: 0 12px 30px rgba(0,0,0,0.55);
         }
         .toast-notify.show { transform: translateX(-50%) translateY(0); }
+
+        /* PERUBAHAN: Desain Overlay Animasi Full-Gaming ROG TURBO MODE */
+        .cache-anim-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.95); z-index: 999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            overflow: hidden;
+        }
+        .cache-anim-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .rog-scan-container {
+            position: relative; width: 180px; height: 180px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        /* Efek Lingkaran Radar Utama */
+        .rog-radar-ring {
+            position: absolute; width: 100%; height: 100%;
+            border: 2px dashed rgba(255, 59, 48, 0.2);
+            border-radius: 50%;
+            animation: rogSpin 4s linear infinite;
+        }
+        .rog-radar-line {
+            position: absolute; width: 100%; height: 100%;
+            border: 3px solid transparent;
+            border-top: 3px solid #ff3b30;
+            border-radius: 50%;
+            animation: rogSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        /* Angka Persentase di Tengah */
+        .rog-counter-box {
+            font-size: 38px; font-weight: 900; color: #ffffff;
+            font-family: monospace, sans-serif; text-shadow: 0 0 15px rgba(255, 59, 48, 0.8);
+        }
+        
+        @keyframes rogSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .cache-anim-text {
+            margin-top: 30px; font-size: 15px; font-weight: 800; color: #ff3b30;
+            letter-spacing: 3px; text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 59, 48, 0.5);
+            animation: rogPulseText 1s infinite alternate;
+        }
+        @keyframes rogPulseText { 0% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -352,28 +396,38 @@
                         <path d="M12 6L7 8V12C7 15.3 9.14 18.37 12 19.3V6Z" fill="#ffffff" opacity="0.8"/>
                         <defs>
                             <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#0E7C7B" />
-                                <stop offset="100%" stop-color="#34c759" />
+                                <stop offset="0%" stop-color="#ff3b30" />
+                                <stop offset="100%" stop-color="#ff2d55" />
                             </linearGradient>
                         </defs>
                     </svg>
                 </div>
-                <span class="brand-title">MAGIC</span>
+                <span class="brand-title">ROG LAUNCHER</span>
             </div>
             <div class="game-list-scroll" id="gameListWrapper">
-                <div style="color:#8e8e93; padding:20px; font-size:14px;">Memuat konfigurasi sistem...</div>
+                <div style="color:#8e8e93; padding:20px; font-size:14px;" id="emptyStateText">Belum ada game. Tambahkan lewat tombol + di kanan bawah.</div>
             </div>
         </div>
 
         <div class="main-panel-right">
             <div class="action-button-group">
-                <h1 class="active-game-title" id="txtCurrentGame">PILIH GAME</h1>
+                <h1 class="active-game-title" id="txtCurrentGame">Pilih Game</h1>
                 <button class="btn btn-start-game" onclick="actionStartGame()">
                     <span>Start Game</span>
                 </button>
             </div>
 
             <div class="utility-box" id="utilityBox">
+                <button class="btn-icon btn-menu-game" id="btnMenuGame" onclick="openGameMenuSheet()" title="Menu Game">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="6" y1="12" x2="10" y2="12"></line>
+                        <line x1="8" y1="10" x2="8" y2="14"></line>
+                        <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                        <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                        <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+                    </svg>
+                </button>
+
                 <button class="btn-icon" onclick="triggerAddApps()" title="Tambah Permainan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -389,7 +443,7 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="openIosSheetMenu()" title="Floating Overlay">
+                <button class="btn-icon" onclick="openIosSheetMenu()" title="Mod Menu / Floating Overlay">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="14" height="14" rx="2"/>
                         <rect x="7" y="7" width="14" height="14" rx="2"/>
@@ -405,31 +459,53 @@
             </div>
 
             <div class="profile-dropdown" id="profileDropdown">
-                <div class="menu-item" onclick="profileAction('https://wa.me/61234567890')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#25D366">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.455 5.703 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                    <span>WhatsApp</span>
+                <div class="menu-item" onclick="profileAction('https://wa.me/61234567890')"><span>WhatsApp</span></div>
+                <div class="menu-item" onclick="profileAction('https://t.me/username')"><span>Telegram</span></div>
+                <div class="menu-item" onclick="profileAction('https://www.tiktok.com/@username')"><span>TikTok</span></div>
+                <div class="menu-item" onclick="profileAction('https://google.com')"><span>Website</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sheet-backdrop" id="gameMenuBackdrop" onclick="closeGameMenuSheet()"></div>
+    <div class="ios-bottom-sheet" id="gameMenuSheet">
+        <div class="sheet-handle" onclick="closeGameMenuSheet()"></div>
+        <div class="sheet-title">Menu Game Booster Pro</div>
+        
+        <div class="sheet-scroll-content">
+            <div class="section-header">Sistem Kontrol Kinerja</div>
+            <div class="ios-group">
+                <div class="feature-row">
+                    <div class="feature-info">
+                        <span class="feature-title">Mode Game Ultra</span>
+                        <span class="feature-desc">Fokuskan core CPU/GPU tingkat tinggi khusus untuk merender engine game.</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switchGameMode" onchange="toggleGameModeFeature(this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div class="menu-item" onclick="profileAction('https://t.me/username')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#229ED9">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                    </svg>
-                    <span>Telegram</span>
+
+                <div class="feature-row">
+                    <div class="feature-info">
+                        <span class="feature-title">Hapus Cache Sistem</span>
+                        <span class="feature-desc">Bersihkan sampah memori berkas temporary seluruh aplikasi secara real-time.</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switchCache" onchange="toggleCacheFeature(this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div class="menu-item" onclick="profileAction('https://www.tiktok.com/@username')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFFFFF">
-                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.03 1.6 4.17 1.13 1.2 2.72 1.94 4.38 2.1v3.8c-1.63-.04-3.23-.53-4.61-1.42-.14-.1-.27-.2-.42-.32v7.7c0 1.53-.35 3.07-1.1 4.39-1.21 2.12-3.41 3.65-5.82 3.96-2.68.35-5.47-.56-7.3-2.56-1.99-2.13-2.73-5.24-1.9-8.03.73-2.55 2.77-4.67 5.37-5.32v3.91c-1.25.33-2.34 1.24-2.74 2.47-.56 1.63-.07 3.56 1.2 4.67 1.15 1.03 2.82 1.34 4.25.77 1.24-.47 2.13-1.62 2.3-2.94.04-1.03.02-2.07.03-3.11V0h.01z"/>
-                    </svg>
-                    <span>TikTok</span>
-                </div>
-                <div class="menu-item" onclick="profileAction('https://google.com')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                    </svg>
-                    <span>Website</span>
+
+                <div class="feature-row">
+                    <div class="feature-info">
+                        <span class="feature-title">Tingkatkan Kecepatan RAM</span>
+                        <span class="feature-desc">Bariskan dan bekukan alokasi memori semua aplikasi background, kecuali game yang berjalan.</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switchSpeed" onchange="toggleSpeedFeature(this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
             </div>
         </div>
@@ -439,7 +515,6 @@
     <div class="ios-bottom-sheet" id="iosBottomSheet">
         <div class="sheet-handle" onclick="closeIosSheetMenu()"></div>
         <div class="sheet-title">Performance Optimizer Set</div>
-        
         <div class="sheet-scroll-content">
             <div class="section-header">Performance Tuning</div>
             <div class="ios-group">
@@ -448,36 +523,8 @@
                     <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(1, this.checked)"><span class="slider"></span></label>
                 </div>
                 <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Drag HS</span><span class="feature-desc">Membantu arah pergerakan drag terkunci secara konsisten ke target</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(2, this.checked)"><span class="slider"></span></label>
-                </div>
-                <div class="feature-row">
                     <div class="feature-info"><span class="feature-title">FPS Boost</span><span class="feature-desc">Memaksa peningkatan kestabilan frame rate subsistem Android</span></div>
                     <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(3, this.checked)"><span class="slider"></span></label>
-                </div>
-                <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Sensitivity Tuning</span><span class="feature-desc">Menyesuaikan tingkat sensitivitas usapan agar transisi aim jauh lebih halus</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(4, this.checked)"><span class="slider"></span></label>
-                </div>
-                <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Max Performance</span><span class="feature-desc">Mengoptimalkan clock core hardware perangkat untuk kestabilan penuh</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(5, this.checked)"><span class="slider"></span></label>
-                </div>
-            </div>
-
-            <div class="section-header">Global Optimizer</div>
-            <div class="ios-group">
-                <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Pointer Sensitivity</span><span class="feature-desc">Mengaktifkan akselerasi pointer dengan kalkulasi presisi tinggi</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(6, this.checked)"><span class="slider"></span></label>
-                </div>
-                <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Hardware Rendering</span><span class="feature-desc">Memaksa subsistem UI grafis berjalan penuh di atas modul hardware GPU</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(7, this.checked)"><span class="slider"></span></label>
-                </div>
-                <div class="feature-row">
-                    <div class="feature-info"><span class="feature-title">Super Touch Response</span><span class="feature-desc">Meminimalisir waktu tunda (delay) respon gesekan layar sentuh tingkat kernel</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(8, this.checked)"><span class="slider"></span></label>
                 </div>
             </div>
         </div>
@@ -487,35 +534,44 @@
     <div class="ios-bottom-sheet" id="addGamesSheet" style="width: 68%; max-height: 78%;">
         <div class="sheet-handle" onclick="closeAddGamesSheet()"></div>
         <div class="sheet-title">Tambah Permainan</div>
-        
         <div class="search-container">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
             <input type="text" id="appSearchInput" class="search-input" placeholder="Cari aplikasi atau game..." oninput="filterApps()">
         </div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px;">
-            <div style="color: #8e8e93; font-size: 13.5px; font-weight: 500;">
-                Menambahkan <span id="enabledCount" style="color:#ffffff; font-weight:700;">0</span> permainan
-            </div>
-        </div>
-        
         <div class="sheet-scroll-content" id="addGamesList"></div>
+    </div>
+
+    <div class="cache-anim-overlay" id="cacheAnimOverlay">
+        <div class="rog-scan-container">
+            <div class="rog-radar-ring"></div>
+            <div class="rog-radar-line"></div>
+            <div class="rog-counter-box" id="rogCounter">0%</div>
+        </div>
+        <div class="cache-anim-text" id="cacheAnimText">ROG TURBO TUNING...</div>
     </div>
 
     <input type="file" id="inputBgFile" accept="image/*" style="display: none;" onchange="handleBackgroundSelected(this)">
     <div class="toast-notify" id="toastBox">Mesin Sinkronisasi Aktif!</div>
 
     <script>
+        // PERUBAHAN: Aplikasi dibikin kosong bawaan agar tidak langsung muncul di awal
         let installedApps = [];
         let selectedPackageName = "";
-        let enabledGames = new Set();
+        let enabledGames = new Set([]);
         let searchQuery = "";
+
+        // Fungsi bawaan untuk menampung data dari sistem Android jika di-inject lewat WebView Bridge
+        window.setInstalledAppsData = function(jsonString) {
+            try {
+                installedApps = JSON.parse(jsonString);
+                renderGames();
+            } catch(e) {
+                showToast("Gagal memuat aplikasi sistem");
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
+            renderGames();
         });
 
         function saveToStorage() {
@@ -526,188 +582,30 @@
         function loadSavedData() {
             const savedGames = localStorage.getItem('enabledGames');
             const savedSelected = localStorage.getItem('selectedPackageName');
-            
-            if (savedGames) {
-                enabledGames = new Set(JSON.parse(savedGames));
-            }
-            if (savedSelected) {
-                selectedPackageName = savedSelected;
-            }
-            updateEnabledCount();
+            if (savedGames) enabledGames = new Set(JSON.parse(savedGames));
+            if (savedSelected) selectedPackageName = savedSelected;
         }
 
         function toggleProfileMenu() {
             const dropdown = document.getElementById('profileDropdown');
             dropdown.classList.toggle('show');
-            
-            setTimeout(() => {
-                document.addEventListener('click', function handler(e) {
-                    if (!dropdown.contains(e.target)) {
-                        dropdown.classList.remove('show');
-                        document.removeEventListener('click', handler);
-                    }
-                }, { once: true });
-            }, 10);
         }
 
         function profileAction(url) {
-            const dropdown = document.getElementById('profileDropdown');
-            dropdown.classList.remove('show');
-            
-            if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === "function") {
-                window.AndroidBridge.openExternalUrl(url);
+            window.open(url, '_blank');
+        }
+
+        function checkFreeFireMenuVisibility(pkgName) {
+            const btnMenuGame = document.getElementById('btnMenuGame');
+            if (pkgName === "com.dts.freefireth" || pkgName === "com.dts.freefiremax") {
+                btnMenuGame.style.display = "flex";
             } else {
-                showToast('Membuka tautan...');
-                setTimeout(() => {
-                    window.open(url, '_blank');
-                }, 300);
-            }
-        }
-
-        function openAddGamesSheet() {
-            document.getElementById('appSearchInput').value = ''; 
-            searchQuery = ""; 
-            renderAddGamesList();
-
-            document.getElementById('addSheetBackdrop').classList.add('show');
-            document.getElementById('addGamesSheet').classList.add('show');
-            updateEnabledCount();
-        }
-
-        function closeAddGamesSheet() {
-            document.getElementById('addSheetBackdrop').classList.remove('show');
-            document.getElementById('addGamesSheet').classList.remove('show');
-        }
-
-        function filterApps() {
-            searchQuery = document.getElementById('appSearchInput').value.toLowerCase();
-            renderAddGamesList();
-        }
-
-        function renderAddGamesList() {
-            const listContainer = document.getElementById('addGamesList');
-            listContainer.innerHTML = '';
-
-            const filteredApps = installedApps.filter(app => 
-                app.appName.toLowerCase().includes(searchQuery) || 
-                app.packageName.toLowerCase().includes(searchQuery)
-            );
-
-            if (filteredApps.length === 0) {
-                listContainer.innerHTML = '<div style="color:#8e8e93; padding:30px 20px; text-align:center;">Aplikasi tidak ditemukan.</div>';
-                return;
-            }
-
-            filteredApps.forEach(app => {
-                const row = document.createElement('div');
-                row.className = 'feature-row';
-                row.style.alignItems = 'center';
-                
-                const isChecked = enabledGames.has(app.packageName);
-                
-                row.innerHTML = `
-                    <div class="feature-info" style="width: 76%;">
-                        <div style="display: flex; align-items: center; gap: 14px;">
-                            <img src="data:image/png;base64,${app.icon}" 
-                                 style="width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 3px 10px rgba(0,0,0,0.35); flex-shrink:0;">
-                            <div style="min-width:0;">
-                                <div class="feature-title" style="margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${app.appName}</div>
-                                <div class="feature-desc" style="font-size: 10.5px; opacity: 0.75;">${app.packageName}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" ${isChecked ? 'checked' : ''} 
-                               onchange="toggleGameEnabled('${app.packageName}', this.checked)">
-                        <span class="slider"></span>
-                    </label>
-                `;
-                listContainer.appendChild(row);
-            });
-        }
-
-        function toggleGameEnabled(pkg, isChecked) {
-            if (isChecked) {
-                enabledGames.add(pkg);
-            } else {
-                enabledGames.delete(pkg);
-                if (selectedPackageName === pkg) {
-                    selectedPackageName = "";
-                    document.getElementById('txtCurrentGame').innerText = "PILIH GAME";
-                    document.querySelectorAll('.game-item').forEach(el => el.classList.remove('active'));
-                }
-            }
-            saveToStorage();
-            renderGames();
-            updateEnabledCount();
-        }
-
-        function updateEnabledCount() {
-            const countEl = document.getElementById('enabledCount');
-            if (countEl) countEl.innerText = enabledGames.size;
-        }
-
-        function updateAppListFromAndroid(jsonString) {
-            try {
-                installedApps = JSON.parse(jsonString);
-                renderGames();
-            } catch (e) {
-                document.getElementById('gameListWrapper').innerHTML = "<div style='color:#ff453a; padding:20px;'>Gagal memproses JSON internal.</div>";
-            }
-        }
-
-        function renderGames() {
-            const wrapper = document.getElementById('gameListWrapper');
-            wrapper.innerHTML = "";
-
-            if (installedApps.length === 0) {
-                wrapper.innerHTML = "<div style='color:#8e8e93; padding:20px; font-size:14px;'>Tidak ada game terdeteksi.</div>";
-                return;
-            }
-
-            let hasVisible = false;
-
-            installedApps.forEach((app, index) => {
-                if (!enabledGames.has(app.packageName)) return;
-                hasVisible = true;
-
-                const div = document.createElement('div');
-                div.className = `game-item ${app.packageName === selectedPackageName ? 'active' : ''}`;
-                div.id = `app-${index}`;
-                div.onclick = () => selectApp(app.packageName, app.appName);
-                
-                div.innerHTML = `
-                    <img src="data:image/png;base64,${app.icon}" alt="icon">
-                    <span>${app.appName}</span>
-                `;
-                wrapper.appendChild(div);
-            });
-
-            if (!hasVisible) {
-                wrapper.innerHTML = `
-                    <div style="color:#8e8e93; padding:24px 18px; font-size:14px; line-height:1.6; text-align:center;">
-                        <span style="display:block; font-size:22px; margin-bottom:8px;">🎮</span>
-                        Belum ada game yang ditambahkan.<br>
-                        Silakan tekan tombol <strong style="color:#ffffff;">+ (Tambah)</strong> di bawah kanan.
-                    </div>
-                `;
-                document.getElementById('txtCurrentGame').innerText = "PILIH GAME";
-                return;
-            }
-
-            if (selectedPackageName && enabledGames.has(selectedPackageName)) {
-                const activeApp = installedApps.find(app => app.packageName === selectedPackageName);
-                if (activeApp) {
-                    selectApp(activeApp.packageName, activeApp.appName);
-                }
-            } else if (selectedPackageName === "" && hasVisible) {
-                const firstVisible = installedApps.find(app => enabledGames.has(app.packageName));
-                if (firstVisible) selectApp(firstVisible.packageName, firstVisible.appName);
+                btnMenuGame.style.display = "none";
+                closeGameMenuSheet();
             }
         }
 
         function selectApp(pkg, name) {
-            if (!enabledGames.has(pkg)) return;
             selectedPackageName = pkg;
             saveToStorage();
             
@@ -720,14 +618,116 @@
                     if (el) el.classList.add('active');
                 }
             });
+
+            checkFreeFireMenuVisibility(pkg);
+        }
+
+        function openGameMenuSheet() {
+            document.getElementById('gameMenuBackdrop').classList.add('show');
+            document.getElementById('gameMenuSheet').classList.add('show');
+        }
+
+        function closeGameMenuSheet() {
+            document.getElementById('gameMenuBackdrop').classList.remove('show');
+            document.getElementById('gameMenuSheet').classList.remove('show');
+        }
+
+        function toggleGameModeFeature(isChecked) {
+            if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                window.AndroidBridge.triggerFeatureSwitch(101, isChecked);
+            }
+            showToast(isChecked ? "Ultra Game Mode Aktif!" : "Ultra Game Mode Nonaktif");
+        }
+
+        // PERUBAHAN: Animasi ditrigger pada "Tingkatkan Kecepatan RAM"
+        function toggleSpeedFeature(isChecked) {
+            if (isChecked) {
+                runRogAnimation("RAM SPEED BOOSTER", () => {
+                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                        window.AndroidBridge.triggerFeatureSwitch(102, true);
+                    }
+                    showToast("RAM berhasil dibersihkan! ⚡");
+                });
+            } else {
+                if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                    window.AndroidBridge.triggerFeatureSwitch(102, false);
+                }
+                showToast("Optimalisasi RAM mati");
+            }
+        }
+
+        // PERUBAHAN: Switch Cache tidak menghidupkan switch lain secara otomatis (Mandiri)
+        function toggleCacheFeature(isChecked) {
+            if (isChecked) {
+                runRogAnimation("CLEARING SYSTEM CACHE", () => {
+                    showToast("Cache sistem dibersihkan! 🔥");
+                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                        window.AndroidBridge.triggerFeatureSwitch(103, true);
+                    }
+                });
+            } else {
+                showToast("Pembersihan berkala dimatikan.");
+            }
+        }
+
+        // PERUBAHAN: Generator Animasi Angka dan Efek Scan ala Game Turbo ROG
+        function runRogAnimation(titleText, callback) {
+            const overlay = document.getElementById('cacheAnimOverlay');
+            const textAnim = document.getElementById('cacheAnimText');
+            const counter = document.getElementById('rogCounter');
+            
+            textAnim.innerText = titleText;
+            overlay.classList.add('active');
+            
+            let count = 0;
+            counter.innerText = "0%";
+            
+            let interval = setInterval(() => {
+                count += Math.floor(Math.random() * 12) + 4;
+                if (count >= 100) {
+                    count = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        overlay.classList.remove('active');
+                        if(callback) callback();
+                    }, 400);
+                }
+                counter.innerText = count + "%";
+            }, 80);
+        }
+
+        function renderGames() {
+            const wrapper = document.getElementById('gameListWrapper');
+            if (installedApps.length === 0 || enabledGames.size === 0) {
+                wrapper.innerHTML = `<div style="color:#8e8e93; padding:20px; font-size:14px;">Belum ada game. Tambahkan lewat tombol + di kanan bawah.</div>`;
+                return;
+            }
+            
+            wrapper.innerHTML = "";
+            installedApps.forEach((app, index) => {
+                if (!enabledGames.has(app.packageName)) return;
+                const div = document.createElement('div');
+                div.className = `game-item ${app.packageName === selectedPackageName ? 'active' : ''}`;
+                div.id = `app-${index}`;
+                div.onclick = () => selectApp(app.packageName, app.appName);
+                
+                const iconSrc = app.icon ? `data:image/png;base64,${app.icon}` : "https://via.placeholder.com/38/2c2c2e/ffffff?text=🎮";
+                div.innerHTML = `
+                    <img src="${iconSrc}" alt="icon">
+                    <span>${app.appName}</span>
+                `;
+                wrapper.appendChild(div);
+            });
+
+            if(selectedPackageName) {
+                const activeApp = installedApps.find(app => app.packageName === selectedPackageName);
+                if(activeApp) selectApp(activeApp.packageName, activeApp.appName);
+            }
         }
 
         function openIosSheetMenu() {
             document.getElementById('sheetBackdrop').classList.add('show');
             document.getElementById('iosBottomSheet').classList.add('show');
-            if (window.AndroidBridge && typeof window.AndroidBridge.openFloatingMenu === "function") {
-                window.AndroidBridge.openFloatingMenu();
-            }
         }
 
         function closeIosSheetMenu() {
@@ -735,12 +735,54 @@
             document.getElementById('iosBottomSheet').classList.remove('show');
         }
 
-        function handleFeatureToggle(id, isChecked) {
-            if (window.AndroidBridge) {
-                window.AndroidBridge.triggerFeatureSwitch(id, isChecked);
-            } else {
-                showToast(`Mod ${id} digeser ke ${isChecked}`);
+        function triggerAddApps() {
+            document.getElementById('addSheetBackdrop').classList.add('show');
+            document.getElementById('addGamesSheet').classList.add('show');
+            renderAllAppsForSelection();
+        }
+
+        function closeAddGamesSheet() {
+            document.getElementById('addSheetBackdrop').classList.remove('show');
+            document.getElementById('addGamesSheet').classList.remove('show');
+        }
+
+        function renderAllAppsForSelection() {
+            const listContainer = document.getElementById('addGamesList');
+            if (installedApps.length === 0) {
+                listContainer.innerHTML = `<div style="color:#8e8e93; padding:15px; font-size:13px;">Menunggu sinkronisasi aplikasi dari perangkat...</div>`;
+                return;
             }
+            listContainer.innerHTML = "";
+            installedApps.forEach(app => {
+                const isChecked = enabledGames.has(app.packageName) ? "checked" : "";
+                const row = document.createElement('div');
+                row.className = "feature-row";
+                row.innerHTML = `
+                    <div class="feature-info">
+                        <span class="feature-title">${app.appName}</span>
+                        <span class="feature-desc">${app.packageName}</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" ${isChecked} onchange="toggleGameRegistration('${app.packageName}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        function toggleGameRegistration(pkg, isChecked) {
+            if (isChecked) {
+                enabledGames.add(pkg);
+            } else {
+                enabledGames.delete(pkg);
+                if (selectedPackageName === pkg) {
+                    selectedPackageName = "";
+                    document.getElementById('txtCurrentGame').innerText = "Pilih Game";
+                }
+            }
+            saveToStorage();
+            renderGames();
         }
 
         function actionStartGame() {
@@ -748,38 +790,10 @@
                 showToast("Silakan pilih game terlebih dahulu!");
                 return;
             }
-            if (window.AndroidBridge) {
+            if (window.AndroidBridge && typeof window.AndroidBridge.launchGame === "function") {
                 window.AndroidBridge.launchGame(selectedPackageName);
             } else {
-                showToast("Meluncurkan " + selectedPackageName);
-            }
-        }
-
-        function triggerBackgroundPicker() {
-            if (window.AndroidBridge) {
-                window.AndroidBridge.pickBackground();
-            } else {
-                document.getElementById('inputBgFile').click();
-            }
-        }
-
-        function triggerAddApps() {
-            openAddGamesSheet();
-        }
-
-        function applyAndroidBackground(base64Image) {
-            document.getElementById('bgContainer').style.backgroundImage = `url('data:image/png;base64,${base64Image}')`;
-            showToast("Background Berhasil Diperbarui!");
-        }
-
-        function handleBackgroundSelected(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('bgContainer').style.backgroundImage = `url('${e.target.result}')`;
-                };
-                reader.readAsDataURL(file);
+                showToast("Meluncurkan: " + selectedPackageName);
             }
         }
 
@@ -788,6 +802,17 @@
             toast.innerText = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+        
+        function handleFeatureToggle(id, isChecked) { showToast(`Mod ${id} diubah ke ${isChecked}`); }
+        function triggerBackgroundPicker() { document.getElementById('inputBgFile').click(); }
+        function handleBackgroundSelected(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { document.getElementById('bgContainer').style.backgroundImage = `url('${e.target.result}')`; };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </body>
