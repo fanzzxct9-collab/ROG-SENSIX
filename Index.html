@@ -31,18 +31,19 @@
             background-size: 28px 28px; pointer-events: none; z-index: 1;
         }
 
-        /* REAL-TIME STATUS HUD (POJOK KANAN ATAS) */
+        /* REAL-TIME STATUS HUD - MEPET ATAS ALA PC FPS & MONOKROM */
         .hud-status-bar {
             position: absolute;
-            top: 20px;
+            top: 0;
             right: 50px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 14px;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: none;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 10;
@@ -50,22 +51,21 @@
         .hud-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 5px;
+            font-size: 11px;
             font-weight: 700;
             font-family: monospace, sans-serif;
-            color: #e0e0e0;
+            color: #d1d1d6;
         }
         .hud-item svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2.5;
         }
-        .hud-fps { color: #34c759; }
-        .hud-temp { color: #ff9500; }
-        .hud-cpu { color: #007aff; }
+        /* Mengubah warna warni menjadi netral */
+        .hud-fps, .hud-temp, .hud-cpu { color: #d1d1d6; }
 
         .sidebar-left { width: 34%; height: 100%; display: flex; flex-direction: column; z-index: 2; }
         
@@ -143,7 +143,7 @@
             right: 0;
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
+            gap: 6px; 
             width: auto; 
             align-items: flex-end; 
         }
@@ -155,27 +155,28 @@
             letter-spacing: 1px; 
             color: #ffffff; 
             text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+            margin-right: 4px; 
         }
         
         .btn-start-game { 
-            background: linear-gradient(90deg, #ff3b30 0%, #ff2d55 100%);
+            background: #ff3b30; 
             color: #ffffff; 
             font-weight: 800; 
-            min-width: 220px;
-            padding: 12px 32px;
-            font-size: 15px;
-            letter-spacing: 2px;
+            min-width: 180px; 
+            padding: 10px 24px; 
+            font-size: 13.5px; 
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             border-radius: 4px;
             clip-path: polygon(0 0, 92% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
             border: none;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(255, 59, 48, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4);
         }
         .btn-start-game:hover { 
-            background: linear-gradient(90deg, #ff453a 0%, #ff375f 100%);
-            box-shadow: 0 0 30px rgba(255, 59, 48, 0.7);
+            background: #ff453a;
+            box-shadow: 0 5px 20px rgba(255, 59, 48, 0.6);
         }
         .btn-start-game:active {
             transform: scale(0.96);
@@ -534,6 +535,16 @@
             <div class="ios-group">
                 <div class="feature-row">
                     <div class="feature-info">
+                        <span class="feature-title">Nama Mode fokus</span>
+                        <span class="feature-desc">Otomatis hidupkan mode hening, jangan ganggu, hemat baterai.</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switchFocusMode" onchange="handleFocusModeFeature(this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="feature-row">
+                    <div class="feature-info">
                         <span class="feature-title">Mode Game Ultra</span>
                         <span class="feature-desc">Fokuskan core CPU/GPU tingkat tinggi khusus untuk merender engine game.</span>
                     </div>
@@ -627,7 +638,6 @@
         let enabledGames = new Set([]);
         let audioCtx = null;
 
-        // FUNGSI PENTING: Hanya tombol menu, switch, & sosmed yang memicu sound effect ini
         function playMenuSound() {
             try {
                 if (!audioCtx) {
@@ -639,31 +649,28 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 
-                osc.type = 'sine'; 
-                osc.frequency.setValueAtTime(1200, audioCtx.currentTime); 
-                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08); 
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.05);
                 
-                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.08);
+                osc.stop(audioCtx.currentTime + 0.05);
             } catch (e) {
                 console.log("Audio Error context:", e);
             }
         }
 
-        // SISTEM HUD STATUS REAL-TIME (Simulasi Akurat)
         function updateRealTimeHUD() {
-            // Jam & Menit
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('valTime').innerText = `${hours}:${minutes}`;
 
-            // Simulasi data mesin dinamis (Fluktuatif wajar)
             const randomCpu = Math.floor(Math.random() * (48 - 12 + 1)) + 12;
             const randomRam = Math.floor(Math.random() * (72 - 60 + 1)) + 60;
             const randomTemp = Math.floor(Math.random() * (43 - 36 + 1)) + 36;
@@ -674,17 +681,15 @@
             document.getElementById('valTemp').innerText = randomTemp + "°C";
             document.getElementById('valFps').innerText = randomFps + " FPS";
 
-            // Deteksi Status Baterai Asli Perangkat jika didukung webview/browser
             if (navigator.getBattery) {
                 navigator.getBattery().then(function(battery) {
                     document.getElementById('valBattery').innerText = Math.floor(battery.level * 100) + "%";
                 });
             } else {
-                document.getElementById('valBattery').innerText = "85%"; // Fallback data
+                document.getElementById('valBattery').innerText = "85%";
             }
         }
         
-        // Loop interval HUD diperbarui tiap 1.5 detik
         setInterval(updateRealTimeHUD, 1500);
         updateRealTimeHUD();
 
@@ -713,7 +718,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
             renderGames();
-            // Menambahkan pendengar klik khusus untuk switch input toggle di seluruh dokumen
             document.addEventListener('change', function(e) {
                 if (e.target && e.target.type === 'checkbox') {
                     playMenuSound();
@@ -739,7 +743,7 @@
         }
 
         function profileAction(url) {
-            playMenuSound(); // Bunyi klik pada tombol sosial media
+            playMenuSound();
             if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === "function") {
                 window.AndroidBridge.openExternalUrl(url);
             } else {
@@ -779,6 +783,19 @@
                 window.AndroidBridge.triggerFeatureSwitch(id, isChecked);
             } else {
                 showToast(`Mod ID ${id} diubah ke ${isChecked}`);
+            }
+        }
+
+        /* LOGIK ANIMASI DAN TRIGER MODE FOKUS */
+        function handleFocusModeFeature(isChecked) {
+            if (isChecked) {
+                runRogAnimation("FOCUS MODE ENGAGED", () => {
+                    handleFeatureToggle(104, true); // Kirim ID 104 ke bridge Android untuk memicu hening/hemat batre sistem asli
+                    showToast("Mode Hening, Jangan Ganggu & Hemat Baterai Aktif!");
+                });
+            } else {
+                handleFeatureToggle(104, false);
+                showToast("Nama Mode fokus Dinonaktifkan");
             }
         }
 
