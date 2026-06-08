@@ -472,7 +472,7 @@
             <div class="ios-group">
                 <div class="feature-row">
                     <div class="feature-info">
-                        <span class="feature-title">Gaming Mode 820 Universal</span>
+                        <span class="feature-title">Gaming Mode</span>
                         <span class="feature-desc">Ubah resolusi layar dan density agar performa gaming jauh lebih lancar dan aman.</span>
                     </div>
                     <label class="switch">
@@ -686,28 +686,11 @@
         }
 
         function handleGamingModeToggle(isChecked) {
-            if (window.AndroidBridge && typeof window.AndroidBridge.executeShellCommand === "function") {
-                if (isChecked) {
-                    runRogAnimation("GAMING MODE TUNING", () => {
-                        const cmd = "MAIN_SIZE=$(wm size | awk '{print $NF}'); WIDTH=$(echo $MAIN_SIZE | cut -d'x' -f1); HEIGHT=$(echo $MAIN_SIZE | cut -d'x' -f2); ASPECT_RATIO=$((HEIGHT * 100 / WIDTH)); NEW_WIDTH=$((820 * WIDTH / 360)); NEW_HEIGHT=$((NEW_WIDTH * ASPECT_RATIO / 100)); wm size ${NEW_WIDTH}x${NEW_HEIGHT}; wm density 820; echo 'Gaming Mode 820 Universal Aktif! Aman di semua HP.'";
-                        window.AndroidBridge.executeShellCommand(cmd);
-                        showToast("Gaming Mode 820 Aktif!");
-                    });
-                } else {
-                    const cmd = "wm size reset; wm density reset; echo 'Layar kembali normal ke bawaan pabrik!'";
-                    window.AndroidBridge.executeShellCommand(cmd);
-                    showToast("Layar kembali normal!");
-                }
-            } else {
-                // Simulasi interface lokal jika di luar webview android
-                if (isChecked) {
-                    runRogAnimation("GAMING MODE TUNING", () => {
-                        showToast("Simulasi: Gaming Mode 820 Universal Aktif!");
-                    });
-                } else {
-                    showToast("Simulasi: Layar kembali normal!");
-                }
-            }
+            // Animasi radar pemindaian ROG tetap berjalan di layar agar estetik
+            runRogAnimation(isChecked ? "GAMING MODE TUNING" : "RESTORING RESOLUTION", () => {
+                // DIKIRIM KE JAVA (MURNI DAN BUKAN PAJANGAN VISUAL)
+                handleFeatureToggle(106, isChecked);
+            });
         }
 
         function handleSpeedFeature(isChecked) {
