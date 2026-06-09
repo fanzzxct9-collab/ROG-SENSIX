@@ -23,8 +23,20 @@
             background-image: linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%);
             background-size: cover; background-position: center;
             display: flex; padding: 25px 25px 25px 40px; transition: background 0.5s ease;
+            z-index: 2;
         }
         
+        /* Background Video Container */
+        .bg-video-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; overflow: hidden; pointer-events: none;
+            display: none;
+        }
+        .bg-video-wrapper video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
         .launcher-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.018) 50%, transparent 52%);
@@ -73,6 +85,8 @@
             color: #c0c0c8; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex; align-items: center; gap: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
         }
         .game-item img, .game-item .fallback-icon { 
             width: 38px; height: 38px; border-radius: 10px; object-fit: cover; 
@@ -137,6 +151,8 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4);
+            position: relative;
+            overflow: hidden;
         }
         .btn-start-game:hover { 
             background: #ff453a;
@@ -378,9 +394,83 @@
             animation: rogPulseText 1s infinite alternate;
         }
         @keyframes rogPulseText { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* Style Tambahan untuk Desain Pemilih Kategori Background */
+        .bg-choice-container {
+            display: flex; gap: 15px; margin-bottom: 20px; justify-content: center;
+        }
+        .btn-choice {
+            flex: 1; padding: 12px; background: rgba(255,255,255,0.06); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            color: #fff; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+            text-align: center; font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-choice.active {
+            background: rgba(255, 59, 48, 0.2); border-color: #ff3b30; color: #ff3b30;
+        }
+        .input-url-box {
+            display: flex; gap: 10px; margin-top: 15px; background: rgba(255,255,255,0.04);
+            padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
+        }
+        .input-url-box input {
+            flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 13px;
+        }
+        .btn-apply-url {
+            background: #ff3b30; border: none; padding: 6px 14px; color: #fff; 
+            font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-apply-url:hover { background: #ff453a; }
+        .preset-bg-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;
+        }
+        .preset-item {
+            height: 65px; border-radius: 8px; overflow: hidden; cursor: pointer;
+            border: 1.5px solid transparent; position: relative; background: #1c1c1e;
+        }
+        .preset-item img, .preset-item video {
+            width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+        }
+        .preset-item:hover { border-color: rgba(255,255,255,0.5); }
+        .preset-label {
+            position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.6);
+            font-size: 9px; text-align: center; padding: 2px 0; font-weight: bold;
+        }
+
+        /* --- ANIMASI KLIK RED CYBER RIPPLE & GUNCANG --- */
+        .red-ripple {
+            position: absolute;
+            background: rgba(255, 59, 48, 0.6);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: rippleEffect 0.5s ease-out;
+            pointer-events: none;
+        }
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        .glitch-shake {
+            animation: cyberShake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes cyberShake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+            40%, 60% { transform: translate3d(3px, 0, 0); }
+        }
     </style>
 </head>
 <body>
+
+    <div class="bg-video-wrapper" id="bgVideoWrapper">
+        <video id="mainBgVideo" loop muted playsinline autoplay></video>
+    </div>
 
     <div class="launcher-container" id="bgContainer">
         
@@ -431,7 +521,7 @@
                     </svg>
                 </button>
 
-                <button class="btn-icon" onclick="triggerBackgroundPicker(); playMenuSound(); event.stopPropagation();" title="Ganti Background">
+                <button class="btn-icon" onclick="openBgPickerSheet(); playMenuSound(); event.stopPropagation();" title="Ganti Background">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -455,11 +545,41 @@
             </div>
 
             <div class="profile-dropdown" id="profileDropdown">
-                <div class="menu-item" onclick="profileAction('https://wa.me/61234567890')"><span>WhatsApp</span></div>
+                <div class="menu-item" onclick="profileAction('https://wa.me/6285808608116')"><span>WhatsApp</span></div>
                 <div class="menu-item" onclick="profileAction('https://t.me/username')"><span>Telegram</span></div>
                 <div class="menu-item" onclick="profileAction('https://www.tiktok.com/@username')"><span>TikTok</span></div>
                 <div class="menu-item" onclick="profileAction('https://google.com')"><span>Website</span></div>
             </div>
+        </div>
+    </div>
+
+    <div class="sheet-backdrop" id="bgPickerBackdrop" onclick="closeBgPickerSheet()"></div>
+    <div class="ios-bottom-sheet" id="bgPickerSheet" style="width: 60%; max-height: 85%;">
+        <div class="sheet-handle" onclick="closeBgPickerSheet()"></div>
+        <div class="sheet-title">Pengaturan Latar Belakang</div>
+        <div class="sheet-scroll-content">
+            
+            <div class="bg-choice-container">
+                <button class="btn-choice active" id="btnModeGambar" onclick="switchBgMode('GAMBAR')">🖼️ GAMBAR</button>
+                <button class="btn-choice" id="btnModeVideo" onclick="switchBgMode('VIDEO')">🎬 VIDEO</button>
+            </div>
+
+            <div class="section-header">Pilih Sumber Media</div>
+            <div class="ios-group" style="padding: 12px;">
+                <button class="btn-start-game" style="width: 100%; clip-path: none; min-height: 44px; font-size: 12px;" onclick="triggerLocalFilePicker()">
+                    Buka Berkas Lokal Anda
+                </button>
+                
+                <div class="input-url-box">
+                    <input type="text" id="inputBgUrl" placeholder="Masukkan URL Gambar/Video (.mp4, .jpg)...">
+                    <button class="btn-apply-url" onclick="applyBackgroundUrl()">Terapkan</button>
+                </div>
+            </div>
+
+            <div class="section-header">Background Bawaan (Default URL)</div>
+            <div class="preset-bg-grid" id="presetContainer">
+            </div>
+
         </div>
     </div>
 
@@ -513,19 +633,19 @@
             <div class="ios-group">
                 <div class="feature-row">
                     <div class="feature-info"><span class="feature-title">Easy Drag Mulus</span><span class="feature-desc">Mempermudah koordinat pergerakan drag geser agar terasa lebih ringan.</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(1, this.checked)"><span class="slider"></span></label>
+                    <label class="switch"><input type="checkbox" id="switchTweak1" onchange="handleFeatureToggle(1, this.checked)"><span class="slider"></span></label>
                 </div>
                 <div class="feature-row">
                     <div class="feature-info"><span class="feature-title">Drag HS / Aim Target</span><span class="feature-desc">Mengunci konsistensi titik tengah layar saat melepas tembakan beruntun.</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(2, this.checked)"><span class="slider"></span></label>
+                    <label class="switch"><input type="checkbox" id="switchTweak2" onchange="handleFeatureToggle(2, this.checked)"><span class="slider"></span></label>
                 </div>
                 <div class="feature-row">
                     <div class="feature-info"><span class="feature-title">FPS Boost Stabilizer</span><span class="feature-desc">Memaksa peningkatan kestabilan frame rate subsistem Android runtime.</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(3, this.checked)"><span class="slider"></span></label>
+                    <label class="switch"><input type="checkbox" id="switchTweak3" onchange="handleFeatureToggle(3, this.checked)"><span class="slider"></span></label>
                 </div>
                 <div class="feature-row">
                     <div class="feature-info"><span class="feature-title">Sensitivity Tuning</span><span class="feature-desc">Meningkatkan rasio pergerakan kursor ke level pointer tertinggi (+7).</span></div>
-                    <label class="switch"><input type="checkbox" onchange="handleFeatureToggle(4, this.checked)"><span class="slider"></span></label>
+                    <label class="switch"><input type="checkbox" id="switchTweak4" onchange="handleFeatureToggle(4, this.checked)"><span class="slider"></span></label>
                 </div>
             </div>
         </div>
@@ -556,7 +676,7 @@
         <div class="cache-anim-text" id="cacheAnimText">ROG TURBO TUNING...</div>
     </div>
 
-    <input type="file" id="inputBgFile" accept="image/*" style="display: none;" onchange="handleBackgroundSelected(this)">
+    <input type="file" id="inputBgFile" style="display: none;" onchange="handleBackgroundSelected(this)">
     <div class="toast-notify" id="toastBox">Sistem Siap Digunakan</div>
 
     <script>
@@ -564,6 +684,68 @@
         let selectedPackageName = "";
         let enabledGames = new Set([]);
         let audioCtx = null;
+
+        // State manajemen background baru
+        let currentBgMode = "GAMBAR"; // Pilihan: "GAMBAR" atau "VIDEO"
+
+        // URL Default Aset yang kini disatukan ke Server GitHub yang sama
+        const presetBackgrounds = {
+            GAMBAR: [
+                { name: "Cyber Red Grid", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-red-grid.jpg" },
+                { name: "Dark Mecha Horizon", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/dark-mecha.jpg" },
+                { name: "Abstract Cyber Tech", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-tech.jpg" }
+            ],
+            VIDEO: [
+                { name: "Cyber Red Ring Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-red-grid.mp4" },
+                { name: "Dark Mecha Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/dark-mecha.mp4" },
+                { name: "Abstract Cyber Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-tech.mp4" }
+            ]
+        };
+
+        let featureStates = {
+            tweak1: false, tweak2: false, tweak3: false, tweak4: false,
+            gamingMode: false, ramSpeed: false, cacheClean: false
+        };
+
+        // Fungsi Global Animasi Saat Elemen Merah/Aktif Diklik
+        function createRedClickAnimation(event, element) {
+            if (!event || !element) return;
+            
+            // 1. Efek Guncangan Cyber
+            element.classList.add('glitch-shake');
+            setTimeout(() => element.classList.remove('glitch-shake'), 200);
+
+            // 2. Efek Lingkaran Merah Menyebar (Ripple)
+            const circle = document.createElement('div');
+            const diameter = Math.max(element.clientWidth, element.clientHeight);
+            const radius = diameter / 2;
+
+            const rect = element.getBoundingClientRect();
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.className = 'red-ripple';
+
+            // Bersihkan sisa objek setelah animasi selesai
+            const prevRipple = element.getElementsByClassName('red-ripple')[0];
+            if (prevRipple) prevRipple.remove();
+
+            element.appendChild(circle);
+        }
+
+        // Daftarkan event listener dinamis untuk menangkap klik elemen merah
+        document.addEventListener('click', function(e) {
+            const targetButton = e.target.closest('.btn-start-game, .game-item.active, .btn-apply-url, .btn-choice.active, input:checked + .slider');
+            if (targetButton) {
+                // Untuk switch slider, target animasinya adalah container label .switch
+                if (targetButton.classList.contains('slider')) {
+                    createRedClickAnimation(e, targetButton.parentElement);
+                } else {
+                    createRedClickAnimation(e, targetButton);
+                }
+            }
+        });
 
         function playMenuSound() {
             try {
@@ -609,6 +791,7 @@
             try {
                 installedApps = JSON.parse(jsonString);
                 renderGames();
+                restoreAndSyncFeatures();
             } catch(e) {
                 showToast("Gagal memuat aplikasi sistem");
             }
@@ -616,12 +799,17 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
+            syncAppState(); 
             renderGames();
             document.addEventListener('change', function(e) {
                 if (e.target && e.target.type === 'checkbox') {
                     playMenuSound();
                 }
             });
+        });
+
+        window.addEventListener('resize', () => {
+            syncAppState();
         });
 
         function saveToStorage() {
@@ -634,6 +822,169 @@
             const savedSelected = localStorage.getItem('selectedPackageName');
             if (savedGames) enabledGames = new Set(JSON.parse(savedGames));
             if (savedSelected) selectedPackageName = savedSelected;
+
+            const savedFeatures = localStorage.getItem('featureStates');
+            if (savedFeatures) {
+                featureStates = JSON.parse(savedFeatures);
+            }
+
+            const savedMode = localStorage.getItem('launcherBgMode');
+            if (savedMode) currentBgMode = savedMode;
+        }
+
+        function syncAppState() {
+            const container = document.getElementById('bgContainer');
+            const videoWrapper = document.getElementById('bgVideoWrapper');
+            const videoElement = document.getElementById('mainBgVideo');
+
+            const savedBgData = localStorage.getItem('customLauncherBg');
+
+            if (currentBgMode === "VIDEO") {
+                videoWrapper.style.display = "block";
+                container.style.backgroundImage = "none";
+                container.style.backgroundColor = "transparent";
+                
+                if (savedBgData && (savedBgData.startsWith("data:video") || savedBgData.startsWith("http"))) {
+                    if (videoElement.src !== savedBgData) {
+                        videoElement.src = savedBgData;
+                    }
+                } else {
+                    videoElement.src = presetBackgrounds.VIDEO[0].url;
+                }
+                
+                videoElement.loop = true;
+                videoElement.play().catch(() => {
+                    videoWrapper.style.display = "none";
+                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${videoElement.src}')`;
+                });
+            } else {
+                videoWrapper.style.display = "none";
+                videoElement.pause();
+                
+                if (savedBgData && (savedBgData.startsWith("data:image") || savedBgData.startsWith("http"))) {
+                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${savedBgData}')`;
+                } else {
+                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${presetBackgrounds.GAMBAR[0].url}')`;
+                }
+            }
+
+            const sw1 = document.getElementById('switchTweak1'); if(sw1) sw1.checked = featureStates.tweak1;
+            const sw2 = document.getElementById('switchTweak2'); if(sw2) sw2.checked = featureStates.tweak2;
+            const sw3 = document.getElementById('switchTweak3'); if(sw3) sw3.checked = featureStates.tweak3;
+            const sw4 = document.getElementById('switchTweak4'); if(sw4) sw4.checked = featureStates.tweak4;
+            const swGM = document.getElementById('switchGamingMode'); if(swGM) swGM.checked = featureStates.gamingMode;
+            const swSP = document.getElementById('switchSpeed'); if(swSP) swSP.checked = featureStates.ramSpeed;
+            const swCH = document.getElementById('switchCache'); if(swCH) swCH.checked = featureStates.cacheClean;
+
+            if(selectedPackageName && installedApps.length > 0) {
+                const activeApp = installedApps.find(app => app.packageName === selectedPackageName);
+                if(activeApp) {
+                    document.getElementById('txtCurrentGame').innerText = activeApp.appName;
+                    checkFreeFireMenuVisibility(selectedPackageName);
+                }
+            }
+        }
+
+        function switchBgMode(mode) {
+            currentBgMode = mode;
+            localStorage.setItem('launcherBgMode', mode);
+            
+            document.getElementById('btnModeGambar').classList.toggle('active', mode === 'GAMBAR');
+            document.getElementById('btnModeVideo').classList.toggle('active', mode === 'VIDEO');
+            
+            const fileInput = document.getElementById('inputBgFile');
+            if (mode === 'VIDEO') {
+                fileInput.accept = "video/*";
+            } else {
+                fileInput.accept = "image/*";
+            }
+
+            renderPresetBackgrounds();
+            syncAppState();
+            showToast("Mode diubah ke: " + mode);
+        }
+
+        function openBgPickerSheet() {
+            document.getElementById('bgPickerBackdrop').classList.add('show');
+            document.getElementById('bgPickerSheet').classList.add('show');
+            
+            document.getElementById('btnModeGambar').classList.toggle('active', currentBgMode === 'GAMBAR');
+            document.getElementById('btnModeVideo').classList.toggle('active', currentBgMode === 'VIDEO');
+            
+            renderPresetBackgrounds();
+        }
+
+        function closeBgPickerSheet() {
+            document.getElementById('bgPickerBackdrop').classList.remove('show');
+            document.getElementById('bgPickerSheet').classList.remove('show');
+        }
+
+        function triggerLocalFilePicker() {
+            document.getElementById('inputBgFile').click();
+        }
+
+        function handleBackgroundSelected(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    const base64Data = e.target.result;
+                    localStorage.setItem('customLauncherBg', base64Data);
+                    syncAppState();
+                    showToast("Latar belakang lokal berhasil dipasang!");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function applyBackgroundUrl() {
+            const urlValue = document.getElementById('inputBgUrl').value.trim();
+            if (!urlValue) {
+                showToast("Kolom URL tidak boleh kosong!");
+                return;
+            }
+            localStorage.setItem('customLauncherBg', urlValue);
+            syncAppState();
+            showToast("Background URL Berhasil Diterapkan!");
+            document.getElementById('inputBgUrl').value = "";
+        }
+
+        function renderPresetBackgrounds() {
+            const container = document.getElementById('presetContainer');
+            container.innerHTML = "";
+            
+            const list = presetBackgrounds[currentBgMode];
+            list.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "preset-item";
+                div.onclick = () => {
+                    localStorage.setItem('customLauncherBg', item.url);
+                    syncAppState();
+                    showToast(`Memakai preset: ${item.name}`);
+                };
+
+                // Jika mode video, berikan thumbnail menggunakan poster gambar padanan dari GitHub
+                let previewUrl = item.url;
+                if (currentBgMode === "VIDEO") {
+                    previewUrl = item.url.replace('/videos/', '/images/').replace('.mp4', '.jpg');
+                }
+
+                div.innerHTML = `<img src="${previewUrl}" alt="img"><div class="preset-label">${item.name}</div>`;
+                container.appendChild(div);
+            });
+        }
+
+        function restoreAndSyncFeatures() {
+            syncAppState();
+            if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                if (featureStates.tweak1) window.AndroidBridge.triggerFeatureSwitch(1, true);
+                if (featureStates.tweak2) window.AndroidBridge.triggerFeatureSwitch(2, true);
+                if (featureStates.tweak3) window.AndroidBridge.triggerFeatureSwitch(3, true);
+                if (featureStates.tweak4) window.AndroidBridge.triggerFeatureSwitch(4, true);
+                if (featureStates.gamingMode) window.AndroidBridge.triggerFeatureSwitch(106, true);
+                if (featureStates.ramSpeed) window.AndroidBridge.triggerFeatureSwitch(102, true);
+                if (featureStates.cacheClean) window.AndroidBridge.triggerFeatureSwitch(103, true);
+            }
         }
 
         function toggleProfileMenu() {
@@ -678,6 +1029,9 @@
         }
 
         function handleFeatureToggle(id, isChecked) {
+            featureStates['tweak' + id] = isChecked;
+            localStorage.setItem('featureStates', JSON.stringify(featureStates));
+
             if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
                 window.AndroidBridge.triggerFeatureSwitch(id, isChecked);
             } else {
@@ -686,27 +1040,43 @@
         }
 
         function handleGamingModeToggle(isChecked) {
-            // Animasi radar pemindaian ROG tetap berjalan di layar agar estetik
+            featureStates.gamingMode = isChecked;
+            localStorage.setItem('featureStates', JSON.stringify(featureStates));
+
             runRogAnimation(isChecked ? "GAMING MODE TUNING" : "RESTORING RESOLUTION", () => {
-                // DIKIRIM KE JAVA (MURNI DAN BUKAN PAJANGAN VISUAL)
-                handleFeatureToggle(106, isChecked);
+                if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                    window.AndroidBridge.triggerFeatureSwitch(106, isChecked);
+                }
+                syncAppState();
             });
         }
 
         function handleSpeedFeature(isChecked) {
+            featureStates.ramSpeed = isChecked;
+            localStorage.setItem('featureStates', JSON.stringify(featureStates));
+
             if (isChecked) {
                 runRogAnimation("RAM SPEED BOOSTER", () => {
-                    handleFeatureToggle(102, true);
+                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                        window.AndroidBridge.triggerFeatureSwitch(102, true);
+                    }
                 });
             } else {
-                handleFeatureToggle(102, false);
+                if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                    window.AndroidBridge.triggerFeatureSwitch(102, false);
+                }
             }
         }
 
         function handleCacheFeature(isChecked) {
+            featureStates.cacheClean = isChecked;
+            localStorage.setItem('featureStates', JSON.stringify(featureStates));
+
             if (isChecked) {
                 runRogAnimation("CLEARING SYSTEM CACHE", () => {
-                    handleFeatureToggle(103, true);
+                    if (window.AndroidBridge && typeof window.AndroidBridge.triggerFeatureSwitch === "function") {
+                        window.AndroidBridge.triggerFeatureSwitch(103, true);
+                    }
                 });
             }
         }
@@ -874,23 +1244,6 @@
                 window.AndroidBridge.launchGame(selectedPackageName);
             } else {
                 showToast("Meluncurkan: " + selectedPackageName);
-            }
-        }
-
-        function triggerBackgroundPicker() {
-            if (window.AndroidBridge && typeof window.AndroidBridge.triggerBackgroundPicker === "function") {
-                window.AndroidBridge.triggerBackgroundPicker();
-            } else {
-                document.getElementById('inputBgFile').click();
-            }
-        }
-
-        function handleBackgroundSelected(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { document.getElementById('bgContainer').style.backgroundImage = `url('${e.target.result}')`; };
-                reader.readAsDataURL(file);
             }
         }
 
