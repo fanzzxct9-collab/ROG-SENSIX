@@ -25,17 +25,6 @@
             display: flex; padding: 25px 25px 25px 40px; transition: background 0.5s ease;
             z-index: 2;
         }
-        
-        /* Background Video Container */
-        .bg-video-wrapper {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; overflow: hidden; pointer-events: none;
-            display: none;
-        }
-        .bg-video-wrapper video {
-            width: 100%; height: 100%; object-fit: cover;
-        }
 
         .launcher-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -337,22 +326,45 @@
         input:checked + .slider { background-color: #ff3b30; border-color: #ff3b30; }
         input:checked + .slider:before { transform: translateX(21px); }
 
+        /* --- TOAST NOTIFICATION CYBER REDESIGN --- */
         .toast-notify { 
-            position: fixed; bottom: 32px; left: 50%; 
+            position: fixed; 
+            bottom: 32px; 
+            left: 50%; 
             transform: translateX(-50%) translateY(120px); 
-            background: rgba(28, 28, 30, 0.94); 
-            border: 1px solid rgba(255,59,48,0.3); 
-            color: #fff; 
-            padding: 11px 26px; 
-            border-radius: 22px; 
+            background: rgba(18, 18, 20, 0.85); 
+            border: 1px solid rgba(255, 59, 48, 0.5); 
+            color: #ffffff; 
+            padding: 12px 24px; 
+            border-radius: 16px; 
             font-weight: 600; 
-            font-size: 13.5px; 
-            z-index: 110; 
-            backdrop-filter: blur(12px); 
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+            font-size: 14px; 
+            letter-spacing: 0.5px;
+            z-index: 1100; 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; 
+            box-shadow: 0 10px 30px rgba(255, 59, 48, 0.15), inset 0 0 15px rgba(255, 59, 48, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
         }
-        .toast-notify.show { transform: translateX(-50%) translateY(0); }
+        .toast-notify.show { 
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1;
+        }
+        .toast-icon {
+            color: #ff3b30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulseIcon 1.5s infinite alternate;
+        }
+        @keyframes pulseIcon {
+            from { opacity: 0.6; } to { opacity: 1; }
+        }
 
         .cache-anim-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -396,34 +408,6 @@
         @keyframes rogPulseText { 0% { opacity: 0.6; } 100% { opacity: 1; } }
 
         /* Style Tambahan untuk Desain Pemilih Kategori Background */
-        .bg-choice-container {
-            display: flex; gap: 15px; margin-bottom: 20px; justify-content: center;
-        }
-        .btn-choice {
-            flex: 1; padding: 12px; background: rgba(255,255,255,0.06); 
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            color: #fff; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
-            text-align: center; font-size: 14px;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-choice.active {
-            background: rgba(255, 59, 48, 0.2); border-color: #ff3b30; color: #ff3b30;
-        }
-        .input-url-box {
-            display: flex; gap: 10px; margin-top: 15px; background: rgba(255,255,255,0.04);
-            padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
-        }
-        .input-url-box input {
-            flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 13px;
-        }
-        .btn-apply-url {
-            background: #ff3b30; border: none; padding: 6px 14px; color: #fff; 
-            font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-apply-url:hover { background: #ff453a; }
         .preset-bg-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;
         }
@@ -431,7 +415,7 @@
             height: 65px; border-radius: 8px; overflow: hidden; cursor: pointer;
             border: 1.5px solid transparent; position: relative; background: #1c1c1e;
         }
-        .preset-item img, .preset-item video {
+        .preset-item img {
             width: 100%; height: 100%; object-fit: cover; pointer-events: none;
         }
         .preset-item:hover { border-color: rgba(255,255,255,0.5); }
@@ -467,10 +451,6 @@
     </style>
 </head>
 <body>
-
-    <div class="bg-video-wrapper" id="bgVideoWrapper">
-        <video id="mainBgVideo" loop muted playsinline autoplay></video>
-    </div>
 
     <div class="launcher-container" id="bgContainer">
         
@@ -558,22 +538,12 @@
         <div class="sheet-handle" onclick="closeBgPickerSheet()"></div>
         <div class="sheet-title">Pengaturan Latar Belakang</div>
         <div class="sheet-scroll-content">
-            
-            <div class="bg-choice-container">
-                <button class="btn-choice active" id="btnModeGambar" onclick="switchBgMode('GAMBAR')">🖼️ GAMBAR</button>
-                <button class="btn-choice" id="btnModeVideo" onclick="switchBgMode('VIDEO')">🎬 VIDEO</button>
-            </div>
 
             <div class="section-header">Pilih Sumber Media</div>
             <div class="ios-group" style="padding: 12px;">
-                <button class="btn-start-game" style="width: 100%; clip-path: none; min-height: 44px; font-size: 12px;" onclick="triggerLocalFilePicker()">
-                    Buka Berkas Lokal Anda
+                <button class="btn-start-game" style="width: 100%; clip-path: none; min-height: 44px; font-size: 14px;" onclick="triggerLocalFilePicker()">
+                    📂 Buka Berkas Lokal Anda
                 </button>
-                
-                <div class="input-url-box">
-                    <input type="text" id="inputBgUrl" placeholder="Masukkan URL Gambar/Video (.mp4, .jpg)...">
-                    <button class="btn-apply-url" onclick="applyBackgroundUrl()">Terapkan</button>
-                </div>
             </div>
 
             <div class="section-header">Background Bawaan (Default URL)</div>
@@ -603,7 +573,7 @@
                 <div class="feature-row">
                     <div class="feature-info">
                         <span class="feature-title">Hapus Cache Sistem</span>
-                        <span class="feature-desc">Bersihkan sampah memori berkas temporary seluruh aplikasi secara real-time.</span>
+                        <span class="feature-desc">Bersihkan sampah memori berkas temporary seluruh aplikasi.</span>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="switchCache" onchange="handleCacheFeature(this.checked)">
@@ -676,8 +646,18 @@
         <div class="cache-anim-text" id="cacheAnimText">ROG TURBO TUNING...</div>
     </div>
 
-    <input type="file" id="inputBgFile" style="display: none;" onchange="handleBackgroundSelected(this)">
-    <div class="toast-notify" id="toastBox">Sistem Siap Digunakan</div>
+    <input type="file" id="inputBgFile" style="display: none;" accept="image/*" onchange="handleBackgroundSelected(this)">
+    
+    <div class="toast-notify" id="toastBox">
+        <div class="toast-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        </div>
+        <span id="toastText">Sistem Siap Digunakan</span>
+    </div>
 
     <script>
         let installedApps = [];
@@ -685,41 +665,26 @@
         let enabledGames = new Set([]);
         let audioCtx = null;
 
-        // State manajemen background baru
-        let currentBgMode = "GAMBAR"; // Pilihan: "GAMBAR" atau "VIDEO"
-
-        // URL Default Aset yang kini disatukan ke Server GitHub yang sama
-        const presetBackgrounds = {
-            GAMBAR: [
-                { name: "Cyber Red Grid", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-red-grid.jpg" },
-                { name: "Dark Mecha Horizon", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/dark-mecha.jpg" },
-                { name: "Abstract Cyber Tech", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-tech.jpg" }
-            ],
-            VIDEO: [
-                { name: "Cyber Red Ring Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-red-grid.mp4" },
-                { name: "Dark Mecha Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/dark-mecha.mp4" },
-                { name: "Abstract Cyber Live", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-tech.mp4" }
-            ]
-        };
+        const presetBackgrounds = [
+            { name: "Cyber Red Grid", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-red-grid.jpg" },
+            { name: "Dark Mecha Horizon", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/dark-mecha.jpg" },
+            { name: "Abstract Cyber Tech", url: "https://fanzzxct9-collab.github.io/ROG-SENSIX/cyber-tech.jpg" }
+        ];
 
         let featureStates = {
             tweak1: false, tweak2: false, tweak3: false, tweak4: false,
             gamingMode: false, ramSpeed: false, cacheClean: false
         };
 
-        // Fungsi Global Animasi Saat Elemen Merah/Aktif Diklik
         function createRedClickAnimation(event, element) {
             if (!event || !element) return;
             
-            // 1. Efek Guncangan Cyber
             element.classList.add('glitch-shake');
             setTimeout(() => element.classList.remove('glitch-shake'), 200);
 
-            // 2. Efek Lingkaran Merah Menyebar (Ripple)
             const circle = document.createElement('div');
             const diameter = Math.max(element.clientWidth, element.clientHeight);
             const radius = diameter / 2;
-
             const rect = element.getBoundingClientRect();
             
             circle.style.width = circle.style.height = `${diameter}px`;
@@ -727,18 +692,15 @@
             circle.style.top = `${event.clientY - rect.top - radius}px`;
             circle.className = 'red-ripple';
 
-            // Bersihkan sisa objek setelah animasi selesai
             const prevRipple = element.getElementsByClassName('red-ripple')[0];
             if (prevRipple) prevRipple.remove();
 
             element.appendChild(circle);
         }
 
-        // Daftarkan event listener dinamis untuk menangkap klik elemen merah
         document.addEventListener('click', function(e) {
             const targetButton = e.target.closest('.btn-start-game, .game-item.active, .btn-apply-url, .btn-choice.active, input:checked + .slider');
             if (targetButton) {
-                // Untuk switch slider, target animasinya adalah container label .switch
                 if (targetButton.classList.contains('slider')) {
                     createRedClickAnimation(e, targetButton.parentElement);
                 } else {
@@ -827,45 +789,16 @@
             if (savedFeatures) {
                 featureStates = JSON.parse(savedFeatures);
             }
-
-            const savedMode = localStorage.getItem('launcherBgMode');
-            if (savedMode) currentBgMode = savedMode;
         }
 
         function syncAppState() {
             const container = document.getElementById('bgContainer');
-            const videoWrapper = document.getElementById('bgVideoWrapper');
-            const videoElement = document.getElementById('mainBgVideo');
-
             const savedBgData = localStorage.getItem('customLauncherBg');
 
-            if (currentBgMode === "VIDEO") {
-                videoWrapper.style.display = "block";
-                container.style.backgroundImage = "none";
-                container.style.backgroundColor = "transparent";
-                
-                if (savedBgData && (savedBgData.startsWith("data:video") || savedBgData.startsWith("http"))) {
-                    if (videoElement.src !== savedBgData) {
-                        videoElement.src = savedBgData;
-                    }
-                } else {
-                    videoElement.src = presetBackgrounds.VIDEO[0].url;
-                }
-                
-                videoElement.loop = true;
-                videoElement.play().catch(() => {
-                    videoWrapper.style.display = "none";
-                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${videoElement.src}')`;
-                });
+            if (savedBgData && (savedBgData.startsWith("data:image") || savedBgData.startsWith("http"))) {
+                container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${savedBgData}')`;
             } else {
-                videoWrapper.style.display = "none";
-                videoElement.pause();
-                
-                if (savedBgData && (savedBgData.startsWith("data:image") || savedBgData.startsWith("http"))) {
-                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${savedBgData}')`;
-                } else {
-                    container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${presetBackgrounds.GAMBAR[0].url}')`;
-                }
+                container.style.backgroundImage = `linear-gradient(180deg, rgba(28, 28, 30, 0.45) 0%, rgba(0, 0, 0, 0.92) 100%), url('${presetBackgrounds[0].url}')`;
             }
 
             const sw1 = document.getElementById('switchTweak1'); if(sw1) sw1.checked = featureStates.tweak1;
@@ -885,32 +818,9 @@
             }
         }
 
-        function switchBgMode(mode) {
-            currentBgMode = mode;
-            localStorage.setItem('launcherBgMode', mode);
-            
-            document.getElementById('btnModeGambar').classList.toggle('active', mode === 'GAMBAR');
-            document.getElementById('btnModeVideo').classList.toggle('active', mode === 'VIDEO');
-            
-            const fileInput = document.getElementById('inputBgFile');
-            if (mode === 'VIDEO') {
-                fileInput.accept = "video/*";
-            } else {
-                fileInput.accept = "image/*";
-            }
-
-            renderPresetBackgrounds();
-            syncAppState();
-            showToast("Mode diubah ke: " + mode);
-        }
-
         function openBgPickerSheet() {
             document.getElementById('bgPickerBackdrop').classList.add('show');
             document.getElementById('bgPickerSheet').classList.add('show');
-            
-            document.getElementById('btnModeGambar').classList.toggle('active', currentBgMode === 'GAMBAR');
-            document.getElementById('btnModeVideo').classList.toggle('active', currentBgMode === 'VIDEO');
-            
             renderPresetBackgrounds();
         }
 
@@ -931,45 +841,25 @@
                     const base64Data = e.target.result;
                     localStorage.setItem('customLauncherBg', base64Data);
                     syncAppState();
-                    showToast("Latar belakang lokal berhasil dipasang!");
+                    showToast("Latar belakang berhasil diubah!");
                 };
                 reader.readAsDataURL(file);
             }
-        }
-
-        function applyBackgroundUrl() {
-            const urlValue = document.getElementById('inputBgUrl').value.trim();
-            if (!urlValue) {
-                showToast("Kolom URL tidak boleh kosong!");
-                return;
-            }
-            localStorage.setItem('customLauncherBg', urlValue);
-            syncAppState();
-            showToast("Background URL Berhasil Diterapkan!");
-            document.getElementById('inputBgUrl').value = "";
         }
 
         function renderPresetBackgrounds() {
             const container = document.getElementById('presetContainer');
             container.innerHTML = "";
             
-            const list = presetBackgrounds[currentBgMode];
-            list.forEach(item => {
+            presetBackgrounds.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "preset-item";
                 div.onclick = () => {
                     localStorage.setItem('customLauncherBg', item.url);
                     syncAppState();
-                    showToast(`Memakai preset: ${item.name}`);
+                    showToast(`Memakai: ${item.name}`);
                 };
-
-                // Jika mode video, berikan thumbnail menggunakan poster gambar padanan dari GitHub
-                let previewUrl = item.url;
-                if (currentBgMode === "VIDEO") {
-                    previewUrl = item.url.replace('/videos/', '/images/').replace('.mp4', '.jpg');
-                }
-
-                div.innerHTML = `<img src="${previewUrl}" alt="img"><div class="preset-label">${item.name}</div>`;
+                div.innerHTML = `<img src="${item.url}" alt="img"><div class="preset-label">${item.name}</div>`;
                 container.appendChild(div);
             });
         }
@@ -1247,12 +1137,21 @@
             }
         }
 
+        // Redesigned Toast Function
+        let toastTimeout;
         function showToast(msg) {
             const toast = document.getElementById('toastBox');
-            if (toast) {
-                toast.innerText = msg;
+            const toastText = document.getElementById('toastText');
+            if (toast && toastText) {
+                toastText.innerText = msg;
+                
+                // Reset timeout jika ada toast baru yang masuk cepat
+                clearTimeout(toastTimeout);
+                
                 toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2200);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
             }
         }
     </script>
